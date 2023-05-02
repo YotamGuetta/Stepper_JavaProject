@@ -16,7 +16,6 @@ public abstract class AbstractStepDefinition implements StepDefinition {
         this.readonly = readonly;
         inputs = new ArrayList<>();
         outputs = new ArrayList<>();
-        summery = "";
     }
 
     protected void addInput(DataDefinitionDeclaration dataDefinitionDeclaration) {

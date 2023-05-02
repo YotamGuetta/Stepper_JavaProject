@@ -1,11 +1,9 @@
 package mta.course.java.stepper.main.ui;
 
-import mta.course.java.stepper.dd.impl.DataDefinitionRegistry;
 import mta.course.java.stepper.flow.execution.FlowExecution;
 import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
 
 public class FlowExecutionUI {
@@ -16,26 +14,35 @@ public class FlowExecutionUI {
         this.flowExecution = flowExecution;
         this.scanner = new Scanner(System.in);
     }
-    public void GetFreeInputs(){
-
+    public boolean GetFreeInputs(){
+        boolean executable = false;
         int inputNumber = -1;
         List<DataDefinitionDeclaration> inputs = flowExecution.getFlowDefinition().getFlowFreeInputs();
-        while(inputNumber != 1 && inputNumber != 0) {
-
+        while(true) {
+            if(!executable){
+                executable = flowExecution.CheckIfExecutable();
+            }
             System.out.println("Pick an input out of the list:");
+
             System.out.println("1) Start flow");
+
             for (int i = 0; i < inputs.size(); i++) {
-                System.out.println((i + 2) + ") " + inputs.get(i).getName() + " (" + inputs.get(i).getClass() + ") " + " (" + inputs.get(i).necessity() + ") .");
+                System.out.println((i + 2) + ") " + inputs.get(i).getName() +"= "+flowExecution.getInputValue(inputs.get(i).getName())+ " (Class: " + inputs.get(i).dataDefinition().getType().getSimpleName() + ", Necessity: "  + inputs.get(i).necessity() + ") .");
             }
             System.out.println("0) Go back.");
 
 
             inputNumber = scanner.nextInt();
             if (inputNumber == 0) {
-                break;
+                return false;
             }
             if (inputNumber == 1) {
-                break;
+                if(executable)
+                    return true;
+                else {
+                    System.out.println("Not all mandatory inputs are given");
+                    continue;
+                }
             }
             DataDefinitionDeclaration chosenInput = inputs.get(inputNumber - 2);
             if (chosenInput.dataDefinition().isUserFriendly()) {

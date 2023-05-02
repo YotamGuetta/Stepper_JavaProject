@@ -7,9 +7,7 @@ import mta.course.java.stepper.step.api.DataDefinitionDeclarationImpl;
 import mta.course.java.stepper.step.api.DataNecessity;
 import mta.course.java.stepper.step.api.StepResult;
 
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -25,7 +23,19 @@ public class FileDumperStep extends AbstractStepDefinition {
 
         // step outputs
         addOutput(new DataDefinitionDeclarationImpl("RESULT", DataNecessity.NA, "File Creation Result", DataDefinitionRegistry.STRING));
+    }
 
+    private StepResult returnResult(StepExecutionContext context, StepResult result, String message){
+
+        if(result == StepResult.FAILURE ||result == StepResult.WARNING) {
+            addSummery(result + ": " + message);
+            context.storeStepLogLine(this.name(), getSummery());
+            if (result == StepResult.FAILURE) {
+                context.storeDataValue("RESULT", getSummery());
+                return result;
+            }
+        }
+        return result;
     }
 
     @Override
@@ -37,7 +47,6 @@ public class FileDumperStep extends AbstractStepDefinition {
 
         context.storeStepLogLine(this.name(), "About to create file named "+path.getFileName());
 
-
         try {
             Files.createDirectories(path.getParent());
             try {
@@ -45,26 +54,18 @@ public class FileDumperStep extends AbstractStepDefinition {
                 Files.write(path, data.getBytes());
             }
             catch (FileAlreadyExistsException e) {
-                addSummery("FAILURE: The file "+path.getFileName()+" already exists");
-                context.storeDataValue("RESULT", getSummery());
-                context.storeStepLogLine(this.name(), getSummery());
-                return StepResult.FAILURE;
+                return returnResult(context,StepResult.FAILURE,"The file "+path.getFileName()+" already exists");
             }
         }
         catch(IOException e){
-            addSummery("FAILURE: The path "+location+" isn't valid");
-            context.storeDataValue("RESULT", getSummery());
-            context.storeStepLogLine(this.name(), getSummery());
-            return StepResult.FAILURE;
+            return returnResult(context,StepResult.FAILURE,"The path "+location+" isn't valid");
         }
         // outputs
         context.storeDataValue("RESULT", "SUCCESS");
-        if(data.isEmpty()){
-            addSummery("WARNING: The file content is empty");
-            context.storeStepLogLine(this.name(), getSummery());
-            return StepResult.WARNING;
-        }
 
+        if(data.isEmpty()){
+            return returnResult(context,StepResult.WARNING,"The file content is empty");
+        }
         return StepResult.SUCCESS;
     }
 }

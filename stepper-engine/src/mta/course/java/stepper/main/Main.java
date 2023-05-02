@@ -21,7 +21,8 @@ public class Main {
     public static void main(String[] args) {
 
         //Scanner scanner = new Scanner(System.in);
-
+        String fileName="C:\\Users\\yotam\\StepperFileTest";
+        String msg = "Hello World";
         FlowDefinition flow1 = new FlowDefinitionImpl("Flow 1", "Hello world");
         flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD));
         flow1.validateFlowStructure();
@@ -35,27 +36,8 @@ public class Main {
 
         FLowExecutor fLowExecutor = new FLowExecutor();
 
-        FlowExecution flow1Execution1 = new FlowExecution("1", flow1);
-        // collect all user inputs and store them on the flow execution object
-
-        //fLowExecutor.executeFlow(flow1Execution1);
-
-        FlowExecution flow2Execution1 = new FlowExecution("2", flow2);
-        // collect all user inputs and store them on the flow execution object
-         //Object test = scanner.;
-        try {
-            DataDefinition theData = flow2.getFlowSteps().get(2).getStepDefinition().inputs().get(0).dataDefinition();
-            theData = flow2.getFlowFreeInputs().get(0).dataDefinition();
-            //boolean i =  int.class.isAssignableFrom(test.);
-            //System.out.println(i);
-
-            //System.out.println(theData.getType());
-        }
-        catch (Exception e){
-
-        }
         FlowDefinition flow3 = new FlowDefinitionImpl("Flow 3", "show two person details");
-        flow3.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.PERSON_DETAILS, "Person 1 Details"));
+        flow3.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILE_DUMPER, "file to make"));
         //.getFlowFormalOutputs().add("DETAILS");
         flow3.validateFlowStructure();
 
