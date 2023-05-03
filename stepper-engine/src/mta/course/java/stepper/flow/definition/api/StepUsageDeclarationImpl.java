@@ -13,6 +13,7 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
 
     public StepUsageDeclarationImpl(StepDefinition stepDefinition, String name) {
         this(stepDefinition, false, name);
+
     }
 
     public StepUsageDeclarationImpl(StepDefinition stepDefinition, boolean skipIfFail, String stepName) {

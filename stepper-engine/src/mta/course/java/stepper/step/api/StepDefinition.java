@@ -12,4 +12,5 @@ public interface StepDefinition {
     List<DataDefinitionDeclaration> outputs();
     StepResult invoke(StepExecutionContext context);
     String getSummery();
+    long getRunTime();
 }

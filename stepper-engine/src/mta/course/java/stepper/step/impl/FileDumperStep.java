@@ -18,8 +18,8 @@ public class FileDumperStep extends AbstractStepDefinition {
     public FileDumperStep() {
         super("File Dumper", true);
         // step inputs
-        addOutput(new DataDefinitionDeclarationImpl("CONTENT", DataNecessity.MANDATORY, "Content", DataDefinitionRegistry.STRING));
-        addOutput(new DataDefinitionDeclarationImpl("FILE_NAME", DataNecessity.MANDATORY, "Target file path", DataDefinitionRegistry.STRING));
+        addInput(new DataDefinitionDeclarationImpl("CONTENT", DataNecessity.MANDATORY, "Content", DataDefinitionRegistry.STRING));
+        addInput(new DataDefinitionDeclarationImpl("FILE_NAME", DataNecessity.MANDATORY, "Target file path", DataDefinitionRegistry.STRING));
 
         // step outputs
         addOutput(new DataDefinitionDeclarationImpl("RESULT", DataNecessity.NA, "File Creation Result", DataDefinitionRegistry.STRING));
@@ -29,7 +29,7 @@ public class FileDumperStep extends AbstractStepDefinition {
 
         if(result == StepResult.FAILURE ||result == StepResult.WARNING) {
             addSummery(result + ": " + message);
-            context.storeStepLogLine(this.name(), getSummery());
+            context.storeStepLogLine(getSummery());
             if (result == StepResult.FAILURE) {
                 context.storeDataValue("RESULT", getSummery());
                 return result;
@@ -45,7 +45,7 @@ public class FileDumperStep extends AbstractStepDefinition {
         String location = context.getDataValue("FILE_NAME", String.class);
         Path path = Paths.get(location);
 
-        context.storeStepLogLine(this.name(), "About to create file named "+path.getFileName());
+        context.storeStepLogLine("About to create file named "+path.getFileName());
 
         try {
             Files.createDirectories(path.getParent());
@@ -58,7 +58,7 @@ public class FileDumperStep extends AbstractStepDefinition {
             }
         }
         catch(IOException e){
-            return returnResult(context,StepResult.FAILURE,"The path "+location+" isn't valid");
+            return returnResult(context,StepResult.FAILURE,"The path "+location+" isn't valid or a file");
         }
         // outputs
         context.storeDataValue("RESULT", "SUCCESS");

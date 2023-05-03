@@ -12,7 +12,7 @@ public class FlowExecutionUI {
 
     public FlowExecutionUI( FlowExecution flowExecution){
         this.flowExecution = flowExecution;
-        this.scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in).useDelimiter("\n");
     }
     public boolean GetFreeInputs(){
         boolean executable = false;
@@ -50,21 +50,26 @@ public class FlowExecutionUI {
                 System.out.println("Enter a " + chosenInput.dataDefinition().getType().getSimpleName() + " :");
 
                 if (chosenInput.dataDefinition().getType() == Integer.class) {
-                    int input = scanner.nextInt();
-                    flowExecution.addFreeInput(chosenInput.getName(), input);
+                    int inputInt = scanner.nextInt();
+                    flowExecution.addFreeInput(chosenInput.getName(), inputInt);
                 }
                 if (chosenInput.dataDefinition().getType() == Double.class) {
                     try {
-                        double input = scanner.nextDouble();
-                        flowExecution.addFreeInput(chosenInput.getName(), input);
-                    }
-                    catch (Exception e){
+                        double inputDouble = scanner.nextDouble();
+                        flowExecution.addFreeInput(chosenInput.getName(), inputDouble);
+                    } catch (Exception e) {
                         System.out.println("Not a double");
                     }
                 }
                 if (chosenInput.dataDefinition().getType() == String.class) {
-                    String input = scanner.next();
-                    flowExecution.addFreeInput(chosenInput.getName(), input);
+                    String inputStr="";
+
+                    //inputStr += scanner.nextLine();
+                    inputStr += scanner.skip("\n").nextLine();
+                   // }
+                    //String inputStr = scanner.nextLine();
+
+                    flowExecution.addFreeInput(chosenInput.getName(), inputStr);
                 }
 
             }

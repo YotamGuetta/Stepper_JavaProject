@@ -19,8 +19,8 @@ public class FilesContentExtractorStep extends AbstractStepDefinition {
         super("Files Content Extractor", true);
 
         // step inputs
-        addOutput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.MANDATORY, "Files to extract", DataDefinitionRegistry.LIST));
-        addOutput(new DataDefinitionDeclarationImpl("LINE", DataNecessity.MANDATORY, "Line number to extract", DataDefinitionRegistry.NUMBER));
+        addInput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.MANDATORY, "Files to extract", DataDefinitionRegistry.LIST));
+        addInput(new DataDefinitionDeclarationImpl("LINE", DataNecessity.MANDATORY, "Line number to extract", DataDefinitionRegistry.NUMBER));
 
         // step outputs
         addOutput(new DataDefinitionDeclarationImpl("DATA", DataNecessity.NA, "File not found", DataDefinitionRegistry.RELATION));
@@ -48,12 +48,12 @@ public class FilesContentExtractorStep extends AbstractStepDefinition {
                 line = file.getLineFromFile(lineNumber);
                 if (line.isEmpty()) {
                     line = "Not such line";
-                    context.storeStepLogLine(this.name(), "Problem extracting line number " + lineNumber + " from file " + file);
+                    context.storeStepLogLine("Problem extracting line number " + lineNumber + " from file " + file);
                 }
 
             } catch (Exception e) {
                 line = " File not found";
-                context.storeStepLogLine(this.name(), "Problem extracting line number " + lineNumber + " from file " + file);
+                context.storeStepLogLine("Problem extracting line number " + lineNumber + " from file " + file);
             }
 
             relationData.set(0, countFiles + "");
@@ -70,7 +70,7 @@ public class FilesContentExtractorStep extends AbstractStepDefinition {
         addSummery("SUCCESS: All Files are renamed successfully");
         if (listOfFiles.isEmpty()) {
             addSummery("SUCCESS: the list is empty");
-            context.storeStepLogLine(this.name(), "the list is empty");
+            context.storeStepLogLine("the list is empty");
         }
 
         return StepResult.SUCCESS;

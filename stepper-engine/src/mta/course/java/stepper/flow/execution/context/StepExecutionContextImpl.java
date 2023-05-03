@@ -3,6 +3,7 @@ package mta.course.java.stepper.flow.execution.context;
 import mta.course.java.stepper.dd.api.DataDefinition;
 import mta.course.java.stepper.dd.impl.DataDefinitionRegistry;
 import mta.course.java.stepper.flow.definition.api.StepUsageDeclaration;
+import mta.course.java.stepper.step.StepDefinitionRegistry;
 import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 import mta.course.java.stepper.step.api.StepDefinition;
 
@@ -15,15 +16,16 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 
     private final Map<String, Object> dataValues;
     private final Map<String, DataDefinition> availableDataValues;
-    private final Map<String, List<String>> logLines;
-    private final Map<String, String> summery;
+    private final StringBuilder logLines;
+    private final StringBuilder summery;
 
     public StepExecutionContextImpl(List<StepUsageDeclaration> steps) {
 
         dataValues = new HashMap<>();
         availableDataValues = new HashMap<>();
-        logLines = new HashMap<>();
-        summery = new HashMap<>();
+        logLines = new StringBuilder();
+        summery = new StringBuilder();
+
         for( StepUsageDeclaration step : steps){
             for(DataDefinitionDeclaration input: step.getStepDefinition().inputs())
                 availableDataValues.put(input.getName(),input.dataDefinition());
@@ -31,11 +33,9 @@ public class StepExecutionContextImpl implements StepExecutionContext {
             for(DataDefinitionDeclaration output: step.getStepDefinition().outputs())
                 availableDataValues.put(output.getName(),output.dataDefinition());
 
-            logLines.put(step.getFinalStepName(), new ArrayList<>());
-            summery.put(step.getFinalStepName(), step.getStepDefinition().getSummery());
+            //logLines.put(step.getStepDefinition().name(), new ArrayList<>());
         }
     }
-
     @Override
     public <T> T getDataValue(String dataName, Class<T> expectedDataType) {
         // assuming that from the data name we can get to its data definition
@@ -71,27 +71,31 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         return false;
     }
     @Override
-    public List<String> getAllOutputs(List<String> outputNames){
+    public List<String> getAllOutputs(List<String> outputNames) throws NullPointerException {
         List<String> outputs = new ArrayList<>();
 
-        for(String name : outputNames){
+        for (String name : outputNames) {
+
             outputs.add(dataValues.get(name).toString());
         }
+
         return outputs;
     }
 
     @Override
-    public boolean storeStepLogLine(String step, String logLine) {
-        return logLines.get(step).add(logLine);
+    public void storeStepLogLine(String logLine) {
+        logLines.append(logLine).append("\n");
     }
 
     @Override
-    public List<String> getStepLogLines(String step) {
-        return logLines.get(step);
+    public String getStepLogLines() {
+        return logLines.toString();
     }
 
     @Override
-    public String getStepSummaryLine(String step) {
-        return summery.get(step);
+    public String getStepSummaryLine() {
+        return summery.toString();
     }
+
+
 }

@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class CollectFilesInFolderStep extends AbstractStepDefinition {
-
     public CollectFilesInFolderStep() {
         super("Collect Files In Folder", true);
 
@@ -33,26 +32,27 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
     private StepResult stepResult(StepResult result, StepExecutionContext context, String msg, String directory) {
         if (result == StepResult.FAILURE) {
             addSummery("FAILED: reading the folder " + directory + ", " + msg);
-            context.storeStepLogLine(this.name(), getSummery());
+            context.storeStepLogLine(getSummery());
 
         } else if (result == StepResult.WARNING) {
             addSummery("WARNING: reading the folder " + directory + ", " + msg);
-            context.storeStepLogLine(this.name(), getSummery());
+            context.storeStepLogLine(getSummery());
         } else {
             addSummery("SUCCESS: the folder " + directory + ", " + msg);
         }
+        addRunTime(System.currentTimeMillis() - getRunTime());
         return result;
     }
     @Override
     public StepResult invoke(StepExecutionContext context) {
-
+        addRunTime(System.currentTimeMillis());
         String directory = context.getDataValue("FOLDER_NAME", String.class);
         String filter = context.getDataValue("FILTER", String.class);
 
         int countFiles = 0;
         ListData<FileData> listOfFiles = new ListData<>();
 
-        context.storeStepLogLine(this.name(), "Reading folder " + directory + " content with filter " + filter);
+        context.storeStepLogLine("Reading folder " + directory + " content with filter " + filter);
 
         Path directoryPath = Paths.get(directory);
         if (!Files.exists(directoryPath))
@@ -74,7 +74,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                 countFiles++;
             }
 
-            context.storeStepLogLine(this.name(), "Found " + countFiles + " files in folder matching the filter");
+            context.storeStepLogLine("Found " + countFiles + " files in folder matching the filter");
 
             // outputs
             context.storeDataValue("FILES_LIS", listOfFiles);

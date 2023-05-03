@@ -55,5 +55,7 @@ public enum StepDefinitionRegistry implements StepDefinition {
     public String getSummery() {
         return stepDefinition.getSummery();
     }
-
+    public long getRunTime(){
+        return stepDefinition.getRunTime();
+    }
 }

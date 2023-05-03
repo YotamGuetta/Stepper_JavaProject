@@ -8,7 +8,6 @@ import mta.course.java.stepper.step.api.DataDefinitionDeclarationImpl;
 import mta.course.java.stepper.step.api.DataNecessity;
 import mta.course.java.stepper.step.api.StepResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PropertiesExporterStep extends AbstractStepDefinition {
@@ -16,7 +15,7 @@ public class PropertiesExporterStep extends AbstractStepDefinition {
     public PropertiesExporterStep() {
         super("Properties Exporter", true);
         // step inputs
-        addOutput(new DataDefinitionDeclarationImpl("SOURCE", DataNecessity.MANDATORY, "Source data", DataDefinitionRegistry.RELATION));
+        addInput(new DataDefinitionDeclarationImpl("SOURCE", DataNecessity.MANDATORY, "Source data", DataDefinitionRegistry.RELATION));
 
         // step outputs
         addOutput(new DataDefinitionDeclarationImpl("RESULT", DataNecessity.NA, "Properties export result", DataDefinitionRegistry.STRING));
@@ -44,7 +43,7 @@ public class PropertiesExporterStep extends AbstractStepDefinition {
     public StepResult invoke(StepExecutionContext context) {
         RelationData source = context.getDataValue("SOURCE", RelationData.class);
 
-        context.storeStepLogLine(this.name(), "About to process " + source.size() + " lines of data");
+        context.storeStepLogLine("About to process " + source.size() + " lines of data");
 
         StringBuilder result = new StringBuilder();
         List<String> columns = source.getColumns();
@@ -53,14 +52,14 @@ public class PropertiesExporterStep extends AbstractStepDefinition {
             result.append(convertStringListToProperties(columns, source.getRowDataByColumnsOrder(i)));
         }
 
-        context.storeStepLogLine(this.name(), "Extracted total of " + countWords(result.toString()));
+        context.storeStepLogLine("Extracted total of " + countWords(result.toString()));
 
         // outputs
         context.storeDataValue("RESULT", result);
 
         if (source.size() == 0) {
             addSummery("WARNING: The relation is empty");
-            context.storeStepLogLine(this.name(), getSummery());
+            context.storeStepLogLine(getSummery());
             return StepResult.WARNING;
         }
 

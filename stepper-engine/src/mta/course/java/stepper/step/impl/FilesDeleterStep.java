@@ -17,7 +17,7 @@ public class FilesDeleterStep extends AbstractStepDefinition {
         super("Files Deleter", false);
 
         // step inputs
-        addOutput(new DataDefinitionDeclarationImpl("FILES_LIS", DataNecessity.MANDATORY, "Files to delete", DataDefinitionRegistry.LIST));
+        addInput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.MANDATORY, "Files to delete", DataDefinitionRegistry.LIST));
 
         // step outputs
         addOutput(new DataDefinitionDeclarationImpl("DELETED_LIST", DataNecessity.NA, "Files failed to be deleted", DataDefinitionRegistry.LIST));
@@ -36,7 +36,7 @@ public class FilesDeleterStep extends AbstractStepDefinition {
         ListData<FileData> listOfFiles = context.getDataValue("FILES_LIS", ListData .class);
         ListData<FileData> failedToDelete = new ListData<>();
 
-        context.storeStepLogLine(this.name(), "About to start delete "+listOfFiles.size()+" files");
+        context.storeStepLogLine("About to start delete "+listOfFiles.size()+" files");
 
         for(FileData file : listOfFiles){
             if(file.delete()){
@@ -49,7 +49,7 @@ public class FilesDeleterStep extends AbstractStepDefinition {
             }
         }
 
-        context.storeStepLogLine(this.name(), "Failed to delete file "+countFilesFailed);
+        context.storeStepLogLine("Failed to delete file "+countFilesFailed);
 
         MappingData<Number,Number> pair = new MappingData<>(countFilesDeleted, countFilesFailed);
 
@@ -63,11 +63,11 @@ public class FilesDeleterStep extends AbstractStepDefinition {
         }
         else if(countFilesDeleted != 0){
             addSummery("WARNING: "+countFilesFailed+" files failed to delete");
-            context.storeStepLogLine(this.name(), getSummery());
+            context.storeStepLogLine(getSummery());
             return StepResult.WARNING;
         }
         addSummery("FAILURE: All files failed to delete");
-        context.storeStepLogLine(this.name(), getSummery());
+        context.storeStepLogLine(getSummery());
         return StepResult.FAILURE;
     }
 

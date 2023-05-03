@@ -1,8 +1,6 @@
 package mta.course.java.stepper.step.impl;
 
 import mta.course.java.stepper.dd.impl.DataDefinitionRegistry;
-import mta.course.java.stepper.dd.impl.file.FileData;
-import mta.course.java.stepper.dd.impl.list.ListData;
 import mta.course.java.stepper.dd.impl.relation.RelationData;
 import mta.course.java.stepper.flow.execution.context.StepExecutionContext;
 import mta.course.java.stepper.step.api.AbstractStepDefinition;
@@ -19,7 +17,7 @@ public class CSVExporterStep extends AbstractStepDefinition {
         super("CSV Exporter", true);
 
         // step inputs
-        addOutput(new DataDefinitionDeclarationImpl("SOURCE", DataNecessity.MANDATORY, "Source data", DataDefinitionRegistry.RELATION));
+        addInput(new DataDefinitionDeclarationImpl("SOURCE", DataNecessity.MANDATORY, "Source data", DataDefinitionRegistry.RELATION));
 
         // step outputs
         addOutput(new DataDefinitionDeclarationImpl("RESULT", DataNecessity.NA, "CSV export result", DataDefinitionRegistry.STRING));
@@ -38,11 +36,12 @@ public class CSVExporterStep extends AbstractStepDefinition {
     }
     @Override
     public StepResult invoke(StepExecutionContext context) {
+        addRunTime(System.currentTimeMillis());
         StringBuilder result;
         List<String> row = new ArrayList<>();
         RelationData source = context.getDataValue("SOURCE", RelationData.class);
 
-        context.storeStepLogLine(this.name(),"About to process "+source.size()+" lines of data");
+        context.storeStepLogLine("About to process "+source.size()+" lines of data");
 
         result = new StringBuilder(convertStringListToCSV(source.getColumns()));
 
@@ -55,7 +54,8 @@ public class CSVExporterStep extends AbstractStepDefinition {
 
         if(source.size() == 0){
             addSummery("WARNING: The relation is empty");
-            context.storeStepLogLine(this.name(),getSummery());
+            context.storeStepLogLine(getSummery());
+            addRunTime(System.currentTimeMillis() - getRunTime());
             return  StepResult.WARNING;
         }
 

@@ -19,9 +19,9 @@ public class FilesRenamerStep extends AbstractStepDefinition {
         super("Files Renamer", false);
 
         // step inputs
-        addOutput(new DataDefinitionDeclarationImpl("FILES_TO_RENAME", DataNecessity.MANDATORY, "Files to rename", DataDefinitionRegistry.LIST));
-        addOutput(new DataDefinitionDeclarationImpl("PREFIX", DataNecessity.OPTIONAL, "Add this prefix", DataDefinitionRegistry.STRING));
-        addOutput(new DataDefinitionDeclarationImpl("SUFFIX", DataNecessity.OPTIONAL, "Append this suffix", DataDefinitionRegistry.STRING));
+        addInput(new DataDefinitionDeclarationImpl("FILES_TO_RENAME", DataNecessity.MANDATORY, "Files to rename", DataDefinitionRegistry.LIST));
+        addInput(new DataDefinitionDeclarationImpl("PREFIX", DataNecessity.OPTIONAL, "Add this prefix", DataDefinitionRegistry.STRING));
+        addInput(new DataDefinitionDeclarationImpl("SUFFIX", DataNecessity.OPTIONAL, "Append this suffix", DataDefinitionRegistry.STRING));
 
         // step outputs
         addOutput(new DataDefinitionDeclarationImpl("RENAME_RESULT", DataNecessity.NA, "Rename operation summary", DataDefinitionRegistry.RELATION));
@@ -47,14 +47,14 @@ public class FilesRenamerStep extends AbstractStepDefinition {
         String prefix = context.getDataValue("PREFIX", String.class);
         String suffix = context.getDataValue("SUFFIX", String.class);
 
-        context.storeStepLogLine(this.name(), "About to start rename " + listOfFiles.size() + " files. Adding prefix: " + prefix + "; adding suffix: " + suffix);
+        context.storeStepLogLine("About to start rename " + listOfFiles.size() + " files. Adding prefix: " + prefix + "; adding suffix: " + suffix);
 
 
         for (FileData file : listOfFiles) {
 
             prevName = file.toString();
             if (!file.addPrefixAndPrefix(prefix, suffix)) {
-                context.storeStepLogLine(this.name(), "Problem renaming file " + file);
+                context.storeStepLogLine("Problem renaming file " + file);
                 filesFailedToRename += file.toString() + ", ";
                 allFilesRenamed = false;
             }
@@ -74,7 +74,7 @@ public class FilesRenamerStep extends AbstractStepDefinition {
             StringBuilder sb= new StringBuilder(filesFailedToRename);
             sb.deleteCharAt(sb.length()-1);     //
             sb.deleteCharAt(sb.length()-1);     // Remove the ", " at the end
-            context.storeStepLogLine(this.name(), sb.toString());
+            context.storeStepLogLine(sb.toString());
             return StepResult.WARNING;
         }
 
