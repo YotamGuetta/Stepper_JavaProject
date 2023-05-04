@@ -6,6 +6,8 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     private final StepDefinition stepDefinition;
     private final boolean skipIfFail;
     private final String stepName;
+    private  long stepRunTime;
+    private  String result;
 
     public StepUsageDeclarationImpl(StepDefinition stepDefinition) {
         this(stepDefinition, false, stepDefinition.name());
@@ -36,4 +38,21 @@ public class StepUsageDeclarationImpl implements StepUsageDeclaration {
     public boolean skipIfFail() {
         return skipIfFail;
     }
+    @Override
+    public  long getStepRunTime(){
+        return  stepRunTime;
+    }
+    @Override
+    public void setStepRunTime(long runTime){
+        stepRunTime = runTime;
+    }
+    @Override
+    public String getStepResult(){
+        return result;
+    }
+    @Override
+    public void setStepResult(String stepResult){
+        result = stepResult;
+    }
+
 }

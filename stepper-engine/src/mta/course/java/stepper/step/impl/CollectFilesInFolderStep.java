@@ -25,7 +25,7 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
         addInput(new DataDefinitionDeclarationImpl("FILTER", DataNecessity.OPTIONAL, "Filter only these files", DataDefinitionRegistry.STRING));
 
         // step outputs
-        addOutput(new DataDefinitionDeclarationImpl("FILES_LIS", DataNecessity.NA, "Files list", DataDefinitionRegistry.LIST));
+        addOutput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.NA, "Files list", DataDefinitionRegistry.LIST));
         addOutput(new DataDefinitionDeclarationImpl("TOTAL_FOUND", DataNecessity.NA, "Total files found", DataDefinitionRegistry.NUMBER));
     }
 
@@ -40,12 +40,10 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
         } else {
             addSummery("SUCCESS: the folder " + directory + ", " + msg);
         }
-        addRunTime(System.currentTimeMillis() - getRunTime());
         return result;
     }
     @Override
     public StepResult invoke(StepExecutionContext context) {
-        addRunTime(System.currentTimeMillis());
         String directory = context.getDataValue("FOLDER_NAME", String.class);
         String filter = context.getDataValue("FILTER", String.class);
 

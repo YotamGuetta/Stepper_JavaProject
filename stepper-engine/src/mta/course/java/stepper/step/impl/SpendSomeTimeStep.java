@@ -21,9 +21,9 @@ public class SpendSomeTimeStep extends AbstractStepDefinition {
         Integer seconds = context.getDataValue("TIME_TO_SPEND", Integer.class);
 
         if(seconds <= 0){
-            addSummery("WARNING: "+seconds+" is not a positive number");
+            addSummery("FAILURE: "+seconds+" is not a positive number");
             context.storeStepLogLine(getSummery());
-            return StepResult.WARNING;
+            return StepResult.FAILURE;
         }
 
         context.storeStepLogLine("About to sleep for " + seconds + " seconds…");

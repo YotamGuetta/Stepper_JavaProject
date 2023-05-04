@@ -4,6 +4,7 @@ import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 import mta.course.java.stepper.step.api.StepResult;
 
 import java.util.ArrayList;
+import java.util.InvalidPropertiesFormatException;
 import java.util.List;
 import java.util.Map;
 
@@ -31,8 +32,13 @@ public class FlowDefinitionImpl implements FlowDefinition {
         flowFreeOutputs.add(outputName);
     }
 
-    private void addFlowInputs( List<DataDefinitionDeclaration> inputs) {
-        flowFreeInputs.addAll(inputs);
+    private void addFlowInputs( List<DataDefinitionDeclaration> inputs) throws InvalidPropertiesFormatException {
+        for(DataDefinitionDeclaration input : inputs){
+            if(input.dataDefinition().isUserFriendly())
+                flowFreeInputs.add(input);
+            else
+                throw new InvalidPropertiesFormatException("input "+input.getName()+" is not user friendly");
+        }
 
     }
     private void addFlowOutputs( List<DataDefinitionDeclaration> Outputs) {
@@ -43,18 +49,17 @@ public class FlowDefinitionImpl implements FlowDefinition {
 
     }
 
-    private void addOutputsToInputs(List<DataDefinitionDeclaration> inputs){
+    private void addOutputsToInputs(List<DataDefinitionDeclaration> inputs) {
         for (int i = 0; i < inputs.size(); i++) {
-            if(flowOutputs.contains(inputs.get(i).getName())){
+            if (flowOutputs.contains(inputs.get(i).getName())) {
                 flowFreeOutputs.remove(inputs.get(i).getName());
                 inputs.remove(i);
-                i++;
+                i--;
             }
         }
     }
-
     @Override
-    public void validateFlowStructure() {
+    public void validateFlowStructure() throws InvalidPropertiesFormatException {
         // do some validation logic...
         //•	 output(step x) -> input(step y) <=> step y after step x
         // input יכול להיות מוצמד ל Output
@@ -73,7 +78,6 @@ public class FlowDefinitionImpl implements FlowDefinition {
             addFlowOutputs(outputs);
 
         }
-
 
     }
     @Override
@@ -98,4 +102,5 @@ public class FlowDefinitionImpl implements FlowDefinition {
     public List<String> getFlowFormalOutputs() {
         return flowOutputs;
     }
+
 }

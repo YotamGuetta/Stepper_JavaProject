@@ -18,7 +18,7 @@ public class FlowExecution {
     private final FlowDefinition flowDefinition;
     private FlowExecutionResult flowExecutionResult;
     private final Map<String, Object> freeInputs;
-    private final StringBuilder logLines;
+    private StringBuilder logLines;
     private final Map<String, String> summeryLines;
     private String uuidAsString;
     private Timestamp timeStamp;
@@ -32,6 +32,11 @@ public class FlowExecution {
         logLines = new StringBuilder();
         summeryLines = new HashMap<>();
 
+    }
+    public  void clearFlowData(){
+        this.freeInputs.clear();
+        logLines = new StringBuilder();
+        summeryLines.clear();
     }
     public void setTimeStamp(Timestamp time){
         timeStamp=time;

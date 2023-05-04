@@ -25,37 +25,39 @@ public class Main {
         //Scanner scanner = new Scanner(System.in);
         String fileName="C:\\Users\\yotam\\StepperFileTest\\temp.txt";
         String msg = "Hello World";
-        FlowDefinition flow1 = new FlowDefinitionImpl("Flow 1", "Hello world");
-        flow1.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD));
-        flow1.validateFlowStructure();
-
-        FlowDefinition flow2 = new FlowDefinitionImpl("Flow 2", "show two person details");
-        flow2.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.HELLO_WORLD));
-        flow2.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.PERSON_DETAILS, "Person 1 Details"));
-        flow2.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.PERSON_DETAILS, "Person 2 Details"));
-        flow2.getFlowFormalOutputs().add("DETAILS");
-        flow2.validateFlowStructure();
+        List<FlowFullDetails> details = new ArrayList<>();
 
         FLowExecutor fLowExecutor = new FLowExecutor();
 
         FlowDefinition flow3 = new FlowDefinitionImpl("Flow 3", "show two person details");
-        flow3.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILE_DUMPER, "make file 1"));
+        flow3.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.SPEND_SOME_TIME,true, "time flies"));
         flow3.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.COLLECT_FILES_IN_FOLDER, "get files 1"));
         flow3.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.FILES_DELETER, "delete file 1"));
-        flow3.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.SPEND_SOME_TIME, "time flies"));
-        //.getFlowFormalOutputs().add("DETAILS");
-        flow3.validateFlowStructure();
+        flow3.getFlowSteps().add(new StepUsageDeclarationImpl(StepDefinitionRegistry.SPEND_SOME_TIME,true, "time flies"));
+        //.getFlowFormalOutputs().add("RESULT");
+        try {
+            flow3.validateFlowStructure();
 
-        FlowExecution flow3Execution1 = new FlowExecution("3", flow3);
+            FlowExecution flow3Execution1 = new FlowExecution("3", flow3);
 
 
-        //FlowExecutionUI ui = new FlowExecutionUI(flow3Execution1);
-        //ui.GetFreeInputs();
-        flow3Execution1.addFreeInput("FILTER", ".txt");
-        flow3Execution1.addFreeInput("FOLDER_NAME", "C:\\Users\\yotam\\StepperFileTest");
-        flow3Execution1.addFreeInput("CONTENT", "hello world");
-        flow3Execution1.addFreeInput("FILE_NAME", fileName);
-        flow3Execution1.addFreeInput("TIME_TO_SPEND", 3);
-        //FlowFullDetails details = fLowExecutor.executeFlow(flow3Execution1);
+            //FlowExecutionUI ui = new FlowExecutionUI(flow3Execution1);
+            //ui.GetFreeInputs();
+            for(int i=0; i<2; i++) {
+                flow3Execution1.addFreeInput("FILTER", ".txt");
+                flow3Execution1.addFreeInput("FOLDER_NAME", "C:\\Users\\yotam\\StepperFileTest");
+                flow3Execution1.addFreeInput("CONTENT", "hello world");
+                flow3Execution1.addFreeInput("FILE_NAME", fileName);
+                flow3Execution1.addFreeInput("TIME_TO_SPEND", 0);
+                details.add(fLowExecutor.executeFlow(flow3Execution1));
+                System.out.println(details.get(i).getHistoryData());
+                flow3Execution1.clearFlowData();
+            }
+        }
+        catch (InvalidPropertiesFormatException e){
+            System.out.println("ERROR: "+e.getMessage());
+        }
+
+
     }
 }

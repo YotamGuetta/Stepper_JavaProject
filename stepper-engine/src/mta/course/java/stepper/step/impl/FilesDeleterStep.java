@@ -45,11 +45,12 @@ public class FilesDeleterStep extends AbstractStepDefinition {
             }
             else {
                 failedToDelete.add(file);
+                context.storeStepLogLine("Failed to delete file "+file.toString());
                 countFilesFailed++;
             }
         }
 
-        context.storeStepLogLine("Failed to delete file "+countFilesFailed);
+
 
         MappingData<Number,Number> pair = new MappingData<>(countFilesDeleted, countFilesFailed);
 
