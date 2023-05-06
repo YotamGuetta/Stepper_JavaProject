@@ -19,7 +19,7 @@ public class FlowExecutionDetails {
         while (true) {
             System.out.println("Pick a past action:");
             for (int i = 0; i < details.size(); i++) {
-                System.out.println("Option " + i + 1);
+                System.out.println("Option " + (i + 1));
                 System.out.println("Flow name: " + details.get(i).getFlowName());
                 System.out.println("Flow unique ID: " + details.get(i).getUuid());
                 System.out.println("Flow start time: " + details.get(i).getStartTime());

@@ -43,6 +43,8 @@ public class FileDumperStep extends AbstractStepDefinition {
 
         String data = context.getDataValue("CONTENT",stepFinaleName, String.class);
         String location = context.getDataValue("FILE_NAME",stepFinaleName, String.class);
+        if(location == null)
+            return returnResult(context,StepResult.WARNING,"The file FILE_NAME is empty");
         Path path = Paths.get(location);
 
         context.storeStepLogLine("About to create file named "+path.getFileName());

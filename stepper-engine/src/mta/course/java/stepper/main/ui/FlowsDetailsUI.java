@@ -2,21 +2,17 @@ package mta.course.java.stepper.main.ui;
 
 import mta.course.java.stepper.flow.definition.api.FlowDefinition;
 import mta.course.java.stepper.flow.definition.api.StepUsageDeclaration;
-import mta.course.java.stepper.flow.execution.FlowExecution;
-import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 
-public class FlowsDetailesUI {
-    private Scanner scanner;
-    private List<FlowDefinition> flowDefinitions;
-    private Statistics statistics;
-    private FlowExecutionDetails details;
-    public FlowsDetailesUI(List<FlowDefinition> flowDefinitions, Scanner scanner, Statistics statistics, FlowExecutionDetails details){
+public class FlowsDetailsUI {
+    private final Scanner scanner;
+    private final List<FlowDefinition> flowDefinitions;
+    private final Statistics statistics;
+    private final FlowExecutionDetails details;
+    public FlowsDetailsUI(List<FlowDefinition> flowDefinitions, Scanner scanner, Statistics statistics, FlowExecutionDetails details){
         this.flowDefinitions = flowDefinitions;
         this.scanner = scanner;
         this.statistics =statistics;

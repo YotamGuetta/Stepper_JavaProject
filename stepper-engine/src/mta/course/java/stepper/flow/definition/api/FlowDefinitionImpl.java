@@ -2,7 +2,6 @@ package mta.course.java.stepper.flow.definition.api;
 
 import javafx.util.Pair;
 import mta.course.java.stepper.alias.AliasMapping;
-import mta.course.java.stepper.step.api.DataCapsule;
 import mta.course.java.stepper.step.api.DataCapsuleImpl;
 import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 
@@ -19,7 +18,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
     private final Map<String,DataCapsuleImpl> flowFreeInputs;
     private final AliasMapping aliasingMapping;
     private  final Map<Pair<String,String>, Pair<String, String>> customMapping;
-    private Set<DataCapsuleImpl> allDataCapsules;
+    private final Set<DataCapsuleImpl> allDataCapsules;
     private boolean isFlowReadOnly;
 
     public FlowDefinitionImpl(String name, String description) {
@@ -41,9 +40,7 @@ public class FlowDefinitionImpl implements FlowDefinition {
     public List<DataCapsuleImpl> getAllDataCapsules(){
         return new ArrayList<>(allDataCapsules);
     }
-    public Pair<String, String> getCustomMapping(String targetStep, String targetData){
-        return customMapping.get(new Pair<>(targetStep, targetData));
-    }
+
     public void addAliasingMapping(String step, String source, String alias){
         aliasingMapping.addAliasingMapping(step, source, alias);
     }

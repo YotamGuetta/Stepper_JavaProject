@@ -1,18 +1,12 @@
 package mta.course.java.stepper.flow.execution;
 
-import mta.course.java.stepper.dd.api.DataDefinition;
 import mta.course.java.stepper.flow.definition.api.FlowDefinition;
-import mta.course.java.stepper.step.api.DataCapsule;
 import mta.course.java.stepper.step.api.DataCapsuleImpl;
-import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 import mta.course.java.stepper.step.api.DataNecessity;
 
 import java.sql.Timestamp;
-import java.time.Duration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 public class FlowExecution {
 
@@ -25,6 +19,7 @@ public class FlowExecution {
     private String uuidAsString;
     private Timestamp timeStamp;
     private long flowRunTime;
+    private final Map<String, String> flowFormalOutputs;
     // lots more data that needed to be stored while flow is being executed...
 
     public FlowExecution(String uniqueId, FlowDefinition flowDefinition) {
@@ -33,7 +28,14 @@ public class FlowExecution {
         this.freeInputs = new HashMap<>();
         logLines = new StringBuilder();
         summeryLines = new HashMap<>();
+        flowFormalOutputs = new HashMap<>();
 
+    }
+    public void storeFormalOutput(String userName, String value){
+        flowFormalOutputs.put(userName,value);
+    }
+    public Map<String, String> getFlowFormalOutputs(){
+        return  flowFormalOutputs;
     }
     public  void clearFlowData(){
         this.freeInputs.clear();
@@ -53,24 +55,18 @@ public class FlowExecution {
         return timeStamp.toString();
     }
     public void setThisRunUniqueID(String id){
-            uuidAsString = id;
+        uuidAsString = id;
     }public String getThisRunUniqueID(){
         return uuidAsString;
     }
-    public void storeLogsOfAFlowRun(String flowName, String logs) {
+    public void storeLogsOfAFlowRun(String logs) {
         logLines.append(logs).append("\n");
-        System.out.println("logs:");
-        System.out.println(logs);
-        System.out.println();
     }
     public String getLogOfAFlowRun(){
         return logLines.toString();
     }
     public void storeSummeryOfAFlowRun(String flowName, String summery) {
         summeryLines.put(flowName, summery);
-        System.out.println("summery:");
-        System.out.println(summery);
-        System.out.println();
     }
     public Map<String,String> getSummeryOfAFlowRun(){
         return summeryLines;
@@ -108,7 +104,4 @@ public class FlowExecution {
         return true;
     }
 
-    public Object getInputValue(String inputName) {
-        return freeInputs.get(inputName);
-    }
 }

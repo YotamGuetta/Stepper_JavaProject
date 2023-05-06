@@ -1,18 +1,16 @@
 package mta.course.java.stepper.main.ui;
 
 import mta.course.java.stepper.flow.execution.FlowExecution;
-import mta.course.java.stepper.flow.execution.FlowFullDetails;
-import mta.course.java.stepper.step.api.DataCapsule;
 import mta.course.java.stepper.step.api.DataCapsuleImpl;
 import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 
 import java.util.*;
 
 public class FlowExecutionUI {
-    private Scanner scanner;
-    private FlowExecution flowExecution;
-    private Statistics statistics;
-    private FlowExecutionDetails details;
+    private final Scanner scanner;
+    private final FlowExecution flowExecution;
+    private final Statistics statistics;
+    private final FlowExecutionDetails details;
 
     public FlowExecutionUI( FlowExecution flowExecution, Scanner scanner, Statistics statistics, FlowExecutionDetails details){
         this.flowExecution = flowExecution;
@@ -22,7 +20,7 @@ public class FlowExecutionUI {
     }
     public boolean GetFreeInputs() {
         boolean executable = false;
-        int inputNumber = -1;
+        int inputNumber;
         Map<String, DataCapsuleImpl> inputs = flowExecution.getFlowDefinition().getFlowFreeInputs();
         List<String> inputsKeys = new ArrayList<>(inputs.keySet());
         while (true) {

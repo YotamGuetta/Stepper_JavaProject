@@ -44,14 +44,17 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
     }
     @Override
     public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
-        String directory = context.getDataValue("FOLDER_NAME",stepFinaleName, String.class);
-        String filter = context.getDataValue("FILTER",stepFinaleName, String.class);
+
+            String directory = context.getDataValue("FOLDER_NAME", stepFinaleName, String.class);
+            String filter = context.getDataValue("FILTER", stepFinaleName, String.class);
+
 
         int countFiles = 0;
         ListData<FileData> listOfFiles = new ListData<>();
 
         context.storeStepLogLine("Reading folder " + directory + " content with filter " + filter);
-
+        if(directory == null)
+            return stepResult(StepResult.FAILURE, context, "the folder does not exist", directory);
         Path directoryPath = Paths.get(directory);
         if (!Files.exists(directoryPath))
             return stepResult(StepResult.FAILURE, context, "the folder does not exist", directory);

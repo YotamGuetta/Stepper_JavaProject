@@ -73,8 +73,10 @@ public class FilesRenamerStep extends AbstractStepDefinition {
 
         if (!allFilesRenamed) {
             StringBuilder sb= new StringBuilder(filesFailedToRename.toString());
-            sb.deleteCharAt(sb.length()-1);     //
-            sb.deleteCharAt(sb.length()-1);     // Remove the ", " at the end
+            if(sb.length() > 1) {
+                sb.deleteCharAt(sb.length() - 1);     //
+                sb.deleteCharAt(sb.length() - 1);     // Remove the ", " at the end
+            }
             context.storeStepLogLine(sb.toString());
             return StepResult.WARNING;
         }

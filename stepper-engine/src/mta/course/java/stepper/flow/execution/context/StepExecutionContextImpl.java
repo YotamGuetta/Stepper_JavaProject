@@ -3,14 +3,9 @@ package mta.course.java.stepper.flow.execution.context;
 import javafx.util.Pair;
 import mta.course.java.stepper.alias.AliasMapping;
 import mta.course.java.stepper.dd.api.DataDefinition;
-import mta.course.java.stepper.dd.impl.DataDefinitionRegistry;
 import mta.course.java.stepper.flow.definition.api.FlowDefinition;
-import mta.course.java.stepper.flow.definition.api.FlowDefinitionImpl;
-import mta.course.java.stepper.flow.definition.api.StepUsageDeclaration;
-import mta.course.java.stepper.step.StepDefinitionRegistry;
 import mta.course.java.stepper.step.api.DataCapsuleImpl;
 import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
-import mta.course.java.stepper.step.api.StepDefinition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,41 +34,39 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         }
     }
     @Override
-    public <T> T getDataValue(String dataName, String step, Class<T> expectedDataType) {
+    public <T> T getDataValue(String dataName, String step, Class<T> expectedDataType){
         String dataFinalName = aliasMapping.getDataAliasName(step, dataName);
         Pair<String, String> targetData = new Pair<>(step, dataFinalName);
         if(customMapping.containsKey(targetData)){
             dataFinalName = customMapping.get(targetData).getValue();
         }
-        // assuming that from the data name we can get to its data definition
+
         DataDefinition theExpectedDataDefinition = availableDataValues.get(dataFinalName);
 
         if (expectedDataType.isAssignableFrom(theExpectedDataDefinition.getType())) {
             Object aValue = dataValues.get(dataFinalName);
-            // what happens if it does not exist ?
+
 
             return expectedDataType.cast(aValue);
         } else {
 
-
-            // error handling of some sort...
+            logLines.append("ERROR: Cannot assign ").append(expectedDataType).append(" to ").append(theExpectedDataDefinition.getType()).append("\n");
         }
-
         return null;
     }
 
     @Override
-    public boolean storeDataValue(String dataName, String step, Object value) {
-        String dataOriginalName = aliasMapping.getTrueAliasValue(dataName);
+    public boolean storeDataValue(String dataName, String step, Object value){
         String dataFinalName = aliasMapping.getDataAliasName(step, dataName);
-        // assuming that from the data name we can get to its data definition
+
         DataDefinition theData = availableDataValues.get(dataFinalName);
 
         // we have the DD type, so we can make sure that its from the same type
         if (theData.getType().isAssignableFrom(value.getClass())) {
             dataValues.put(dataFinalName, value);
         } else {
-            // error handling of some sort...
+           logLines.append("ERROR: Cannot assign ").append(theData).append(" to ").append(value.getClass()).append("\n");
+           return  true;
         }
 
         return false;

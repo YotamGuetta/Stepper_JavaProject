@@ -27,9 +27,6 @@ public class FilesDeleterStep extends AbstractStepDefinition {
     @Override
     public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
 
-        String directory = context.getDataValue("FOLDER_NAME",stepFinaleName, String.class);
-        String filter = context.getDataValue("FILTER",stepFinaleName, String.class);
-
         int countFilesDeleted = 0;
         int countFilesFailed = 0;
 
@@ -45,7 +42,7 @@ public class FilesDeleterStep extends AbstractStepDefinition {
             }
             else {
                 failedToDelete.add(file);
-                context.storeStepLogLine("Failed to delete file "+file.toString());
+                context.storeStepLogLine("Failed to delete file "+file);
                 countFilesFailed++;
             }
         }

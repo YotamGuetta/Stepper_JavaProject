@@ -8,7 +8,6 @@ import mta.course.java.stepper.step.api.DataDefinitionDeclarationImpl;
 import mta.course.java.stepper.step.api.DataNecessity;
 import mta.course.java.stepper.step.api.StepResult;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CSVExporterStep extends AbstractStepDefinition {
@@ -38,9 +37,14 @@ public class CSVExporterStep extends AbstractStepDefinition {
     public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
         addRunTime(System.currentTimeMillis());
         StringBuilder result;
-        List<String> row = new ArrayList<>();
         RelationData source = context.getDataValue("SOURCE",super.name(), RelationData.class);
 
+        if(source == null){
+            addSummery("WARNING: The relation is empty");
+            context.storeStepLogLine(getSummery());
+            addRunTime(System.currentTimeMillis() - getRunTime());
+            return  StepResult.WARNING;
+        }
         context.storeStepLogLine("About to process "+source.size()+" lines of data");
 
         result = new StringBuilder(convertStringListToCSV(source.getColumns()));

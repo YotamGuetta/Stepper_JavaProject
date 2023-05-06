@@ -1,15 +1,10 @@
 package mta.course.java.stepper.flow.execution;
 
-import javafx.util.Pair;
+
 import mta.course.java.stepper.flow.definition.api.StepUsageDeclaration;
 import mta.course.java.stepper.flow.execution.context.StepExecutionContext;
-import mta.course.java.stepper.step.StepDefinitionRegistry;
 import mta.course.java.stepper.step.api.DataCapsuleImpl;
-import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 import mta.course.java.stepper.step.api.DataNecessity;
-import mta.course.java.stepper.step.api.StepDefinition;
-
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,9 +40,6 @@ public class FlowFullDetails {
         details.append("Flow Run Time: ").append(flowRunTime).append("ms\n");
 
         details.append("\nFree Inputs: ").append("\n");
-        // Map<String, Object> inputs = flowExecution.getFreeInputs();
-        // for(String key: inputs.keySet())
-        // details.append("Name: ").append(key).append("/n");
 
         Map<String, DataCapsuleImpl> inputsDefinition = flowExecution.getFlowDefinition().getFlowFreeInputs();
         Map<String, Object> inputsValues = flowExecution.getFreeInputs();

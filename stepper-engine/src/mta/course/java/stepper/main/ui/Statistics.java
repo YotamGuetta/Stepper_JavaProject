@@ -38,7 +38,7 @@ public class Statistics {
             System.out.println("    Flow name: "+key);
             System.out.print("    Flow average runtime: ");
             if(flowStatistics.get(key).get(0) != 0)
-                System.out.println( (double)(flowStatistics.get(key).get(1) / flowStatistics.get(key).get(0)));
+                System.out.println( ((double)flowStatistics.get(key).get(1) / flowStatistics.get(key).get(0))+"ms");
             else
                 System.out.println(0.0);
         }System.out.println("Steps: ");
@@ -46,7 +46,7 @@ public class Statistics {
             System.out.println("    Step name: "+key);
             System.out.print("    Step average runtime: ");
             if(stepStatistics.get(key).get(0) != 0)
-                System.out.println( (double)(stepStatistics.get(key).get(1) / stepStatistics.get(key).get(0)));
+                System.out.println( ((double)stepStatistics.get(key).get(1) / stepStatistics.get(key).get(0)) +"ms");
             else
                 System.out.println(0.0);
         }
