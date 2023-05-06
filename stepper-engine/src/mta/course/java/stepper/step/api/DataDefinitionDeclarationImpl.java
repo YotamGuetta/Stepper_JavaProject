@@ -4,18 +4,35 @@ import mta.course.java.stepper.dd.api.DataDefinition;
 
 public class DataDefinitionDeclarationImpl implements DataDefinitionDeclaration {
 
-    private final String name;
+    private String name;
+    private  String parentStepName;
     private final DataNecessity necessity;
     private final String userString;
     private final DataDefinition dataDefinition;
-
-    public DataDefinitionDeclarationImpl(String name, DataNecessity necessity, String userString, DataDefinition dataDefinition) {
-        this.name = name;
+    private  final  String originalName;
+    public DataDefinitionDeclarationImpl(String name,String parentStepName,  DataNecessity necessity, String userString, DataDefinition dataDefinition) {
+        originalName = this.name = name;
         this.necessity = necessity;
         this.userString = userString;
         this.dataDefinition = dataDefinition;
+        this.parentStepName = parentStepName;
     }
-
+    @Override
+    public String getOriginalName(){
+        return originalName;
+    }
+    @Override
+    public void setName(String newName) {
+        name = newName;
+    }
+    @Override
+    public void setParentStepName(String parentStepName){
+        this.parentStepName = parentStepName;
+    }
+    @Override
+    public String getParentStepName(){
+        return  parentStepName;
+    }
     @Override
     public String getName() {
         return name;
@@ -35,4 +52,5 @@ public class DataDefinitionDeclarationImpl implements DataDefinitionDeclaration 
     public DataDefinition dataDefinition() {
         return dataDefinition;
     }
+
 }

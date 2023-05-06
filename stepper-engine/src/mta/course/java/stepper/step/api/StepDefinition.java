@@ -10,7 +10,7 @@ public interface StepDefinition {
     boolean isReadonly();
     List<DataDefinitionDeclaration> inputs();
     List<DataDefinitionDeclaration> outputs();
-    StepResult invoke(StepExecutionContext context);
+    StepResult invoke(StepExecutionContext context, String stepFinaleName);
     String getSummery();
     long getRunTime();
 }

@@ -18,11 +18,11 @@ public class FileDumperStep extends AbstractStepDefinition {
     public FileDumperStep() {
         super("File Dumper", true);
         // step inputs
-        addInput(new DataDefinitionDeclarationImpl("CONTENT", DataNecessity.MANDATORY, "Content", DataDefinitionRegistry.STRING));
-        addInput(new DataDefinitionDeclarationImpl("FILE_NAME", DataNecessity.MANDATORY, "Target file path", DataDefinitionRegistry.STRING));
+        addInput(new DataDefinitionDeclarationImpl("CONTENT", super.name(), DataNecessity.MANDATORY, "Content", DataDefinitionRegistry.STRING));
+        addInput(new DataDefinitionDeclarationImpl("FILE_NAME", super.name(), DataNecessity.MANDATORY, "Target file path", DataDefinitionRegistry.STRING));
 
         // step outputs
-        addOutput(new DataDefinitionDeclarationImpl("RESULT", DataNecessity.NA, "File Creation Result", DataDefinitionRegistry.STRING));
+        addOutput(new DataDefinitionDeclarationImpl("RESULT", super.name(), DataNecessity.NA, "File Creation Result", DataDefinitionRegistry.STRING));
     }
 
     private StepResult returnResult(StepExecutionContext context, StepResult result, String message){
@@ -31,7 +31,7 @@ public class FileDumperStep extends AbstractStepDefinition {
             addSummery(result + ": " + message);
             context.storeStepLogLine(getSummery());
             if (result == StepResult.FAILURE) {
-                context.storeDataValue("RESULT", getSummery());
+                context.storeDataValue("RESULT", super.name(), getSummery());
                 return result;
             }
         }
@@ -39,10 +39,10 @@ public class FileDumperStep extends AbstractStepDefinition {
     }
 
     @Override
-    public StepResult invoke(StepExecutionContext context) {
+    public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
 
-        String data = context.getDataValue("CONTENT", String.class);
-        String location = context.getDataValue("FILE_NAME", String.class);
+        String data = context.getDataValue("CONTENT",stepFinaleName, String.class);
+        String location = context.getDataValue("FILE_NAME",stepFinaleName, String.class);
         Path path = Paths.get(location);
 
         context.storeStepLogLine("About to create file named "+path.getFileName());
@@ -51,7 +51,11 @@ public class FileDumperStep extends AbstractStepDefinition {
             Files.createDirectories(path.getParent());
             try {
                 Files.createFile(path);
-                Files.write(path, data.getBytes());
+                if(data == null || data.isEmpty()){
+                    return returnResult(context,StepResult.WARNING,"The file content is empty");
+                }
+                else
+                    Files.write(path, data.getBytes());
             }
             catch (FileAlreadyExistsException e) {
                 return returnResult(context,StepResult.FAILURE,"The file "+path.getFileName()+" already exists");
@@ -61,11 +65,9 @@ public class FileDumperStep extends AbstractStepDefinition {
             return returnResult(context,StepResult.FAILURE,"The path "+location+" isn't valid or a file");
         }
         // outputs
-        context.storeDataValue("RESULT", "SUCCESS");
+        context.storeDataValue("RESULT", stepFinaleName, "SUCCESS");
 
-        if(data.isEmpty()){
-            return returnResult(context,StepResult.WARNING,"The file content is empty");
-        }
+
         return StepResult.SUCCESS;
     }
 }

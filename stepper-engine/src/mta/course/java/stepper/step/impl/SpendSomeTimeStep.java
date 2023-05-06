@@ -13,12 +13,12 @@ public class SpendSomeTimeStep extends AbstractStepDefinition {
 
     public SpendSomeTimeStep(){
         super("Spend Some Time", true);
-        addInput(new DataDefinitionDeclarationImpl("TIME_TO_SPEND", DataNecessity.MANDATORY, "Total sleeping time (sec)", DataDefinitionRegistry.NUMBER));
+        addInput(new DataDefinitionDeclarationImpl("TIME_TO_SPEND",super.name(), DataNecessity.MANDATORY, "Total sleeping time (sec)", DataDefinitionRegistry.NUMBER));
     }
 
     @Override
-    public StepResult invoke(StepExecutionContext context) {
-        Integer seconds = context.getDataValue("TIME_TO_SPEND", Integer.class);
+    public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
+        Integer seconds = context.getDataValue("TIME_TO_SPEND",stepFinaleName, Integer.class);
 
         if(seconds <= 0){
             addSummery("FAILURE: "+seconds+" is not a positive number");

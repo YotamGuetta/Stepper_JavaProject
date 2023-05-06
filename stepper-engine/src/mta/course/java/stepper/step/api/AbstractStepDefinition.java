@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractStepDefinition implements StepDefinition {
-    long startRunTime;
     private final String stepName;
     private final boolean readonly;
     private final List<DataDefinitionDeclaration> inputs;

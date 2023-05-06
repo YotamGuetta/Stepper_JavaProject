@@ -11,6 +11,7 @@ import mta.course.java.stepper.step.api.DataNecessity;
 import mta.course.java.stepper.step.api.StepResult;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class FilesRenamerStep extends AbstractStepDefinition {
@@ -19,23 +20,23 @@ public class FilesRenamerStep extends AbstractStepDefinition {
         super("Files Renamer", false);
 
         // step inputs
-        addInput(new DataDefinitionDeclarationImpl("FILES_TO_RENAME", DataNecessity.MANDATORY, "Files to rename", DataDefinitionRegistry.LIST));
-        addInput(new DataDefinitionDeclarationImpl("PREFIX", DataNecessity.OPTIONAL, "Add this prefix", DataDefinitionRegistry.STRING));
-        addInput(new DataDefinitionDeclarationImpl("SUFFIX", DataNecessity.OPTIONAL, "Append this suffix", DataDefinitionRegistry.STRING));
+        addInput(new DataDefinitionDeclarationImpl("FILES_TO_RENAME",super.name(), DataNecessity.MANDATORY, "Files to rename", DataDefinitionRegistry.LIST));
+        addInput(new DataDefinitionDeclarationImpl("PREFIX",super.name(), DataNecessity.OPTIONAL, "Add this prefix", DataDefinitionRegistry.STRING));
+        addInput(new DataDefinitionDeclarationImpl("SUFFIX",super.name(), DataNecessity.OPTIONAL, "Append this suffix", DataDefinitionRegistry.STRING));
 
         // step outputs
-        addOutput(new DataDefinitionDeclarationImpl("RENAME_RESULT", DataNecessity.NA, "Rename operation summary", DataDefinitionRegistry.RELATION));
+        addOutput(new DataDefinitionDeclarationImpl("RENAME_RESULT",super.name(), DataNecessity.NA, "Rename operation summary", DataDefinitionRegistry.RELATION));
 
     }
 
     @Override
-    public StepResult invoke(StepExecutionContext context) {
+    public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
         boolean allFilesRenamed = true;
         int countFiles = 1;
         String prevName;
-        String filesFailedToRename = "WARNING: files failed to open: ";
+        StringBuilder filesFailedToRename = new StringBuilder("WARNING: files failed to open: ");
 
-        List<String> relationData = new ArrayList<>(3);
+        List<String> relationData = new ArrayList<>(Arrays.asList("", "", ""));
         List<String> columns = new ArrayList<>(3);
 
         columns.add("Index");
@@ -43,19 +44,19 @@ public class FilesRenamerStep extends AbstractStepDefinition {
         columns.add("New File Name");
         RelationData renameSummery = new RelationData(columns);
 
-        ListData<FileData> listOfFiles = context.getDataValue("FILES_TO_RENAME", ListData.class);
-        String prefix = context.getDataValue("PREFIX", String.class);
-        String suffix = context.getDataValue("SUFFIX", String.class);
+        ListData listOfFiles = context.getDataValue("FILES_TO_RENAME",stepFinaleName, ListData.class);
+        String prefix = context.getDataValue("PREFIX",stepFinaleName, String.class);
+        String suffix = context.getDataValue("SUFFIX",stepFinaleName, String.class);
 
         context.storeStepLogLine("About to start rename " + listOfFiles.size() + " files. Adding prefix: " + prefix + "; adding suffix: " + suffix);
 
 
-        for (FileData file : listOfFiles) {
-
+        for (Object fileObj : listOfFiles) {
+            FileData file = (FileData)fileObj;
             prevName = file.toString();
-            if (!file.addPrefixAndPrefix(prefix, suffix)) {
+            if (!file.addPrefixAndSuffix(prefix, suffix)) {
                 context.storeStepLogLine("Problem renaming file " + file);
-                filesFailedToRename += file.toString() + ", ";
+                filesFailedToRename.append(file).append(", ");
                 allFilesRenamed = false;
             }
 
@@ -68,10 +69,10 @@ public class FilesRenamerStep extends AbstractStepDefinition {
         }
 
         // outputs
-        context.storeDataValue("RENAME_RESULT", renameSummery);
+        context.storeDataValue("RENAME_RESULT", stepFinaleName, renameSummery);
 
         if (!allFilesRenamed) {
-            StringBuilder sb= new StringBuilder(filesFailedToRename);
+            StringBuilder sb= new StringBuilder(filesFailedToRename.toString());
             sb.deleteCharAt(sb.length()-1);     //
             sb.deleteCharAt(sb.length()-1);     // Remove the ", " at the end
             context.storeStepLogLine(sb.toString());

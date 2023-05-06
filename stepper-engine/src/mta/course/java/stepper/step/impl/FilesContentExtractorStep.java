@@ -19,16 +19,16 @@ public class FilesContentExtractorStep extends AbstractStepDefinition {
         super("Files Content Extractor", true);
 
         // step inputs
-        addInput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.MANDATORY, "Files to extract", DataDefinitionRegistry.LIST));
-        addInput(new DataDefinitionDeclarationImpl("LINE", DataNecessity.MANDATORY, "Line number to extract", DataDefinitionRegistry.NUMBER));
+        addInput(new DataDefinitionDeclarationImpl("FILES_LIST",super.name(), DataNecessity.MANDATORY, "Files to extract", DataDefinitionRegistry.LIST));
+        addInput(new DataDefinitionDeclarationImpl("LINE",super.name(), DataNecessity.MANDATORY, "Line number to extract", DataDefinitionRegistry.NUMBER));
 
         // step outputs
-        addOutput(new DataDefinitionDeclarationImpl("DATA", DataNecessity.NA, "File not found", DataDefinitionRegistry.RELATION));
+        addOutput(new DataDefinitionDeclarationImpl("DATA",super.name(), DataNecessity.NA, "File not found", DataDefinitionRegistry.RELATION));
 
     }
 
     @Override
-    public StepResult invoke(StepExecutionContext context) {
+    public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
         int countFiles = 1;
         String line;
 
@@ -40,8 +40,8 @@ public class FilesContentExtractorStep extends AbstractStepDefinition {
         columns.add("Data In File Line");
         RelationData filesNotFound = new RelationData(columns);
 
-        ListData<FileData> listOfFiles = context.getDataValue("FILES_LIST", ListData.class);
-        int lineNumber = context.getDataValue("LINE", Integer.class);
+        ListData<FileData> listOfFiles = context.getDataValue("FILES_LIST",stepFinaleName, ListData.class);
+        int lineNumber = context.getDataValue("LINE",stepFinaleName, Integer.class);
 
         for (FileData file : listOfFiles) {
             try {
@@ -65,7 +65,7 @@ public class FilesContentExtractorStep extends AbstractStepDefinition {
         }
 
         // outputs
-        context.storeDataValue("DATA", filesNotFound);
+        context.storeDataValue("DATA", stepFinaleName, filesNotFound);
 
         addSummery("SUCCESS: All Files are renamed successfully");
         if (listOfFiles.isEmpty()) {

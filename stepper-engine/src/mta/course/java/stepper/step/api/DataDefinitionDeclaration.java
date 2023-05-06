@@ -7,4 +7,8 @@ public interface DataDefinitionDeclaration {
     DataNecessity necessity();
     String userString();
     DataDefinition dataDefinition();
+    void setName(String newName);
+    void setParentStepName(String parentStepName);
+    String getParentStepName();
+    String getOriginalName();
 }

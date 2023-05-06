@@ -9,8 +9,6 @@ import mta.course.java.stepper.step.impl.*;
 import java.util.List;
 
 public enum StepDefinitionRegistry implements StepDefinition {
-    HELLO_WORLD(new HelloWorldStep()),
-    PERSON_DETAILS(new PersonDetailsStep()),
     SPEND_SOME_TIME(new SpendSomeTimeStep()),
     COLLECT_FILES_IN_FOLDER(new CollectFilesInFolderStep()),
     FILES_DELETER(new FilesDeleterStep()),
@@ -31,7 +29,6 @@ public enum StepDefinitionRegistry implements StepDefinition {
         return stepDefinition;
     }
 
-
     public String getName() {
         return stepDefinition.name();
     }
@@ -48,8 +45,8 @@ public enum StepDefinitionRegistry implements StepDefinition {
         return stepDefinition.outputs();
     }
 
-    public StepResult invoke(StepExecutionContext context) {
-        return stepDefinition.invoke(context);
+    public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
+        return stepDefinition.invoke(context, stepFinaleName);
     }
 
     public String getSummery() {

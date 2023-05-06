@@ -2,6 +2,8 @@ package mta.course.java.stepper.flow.execution;
 
 import mta.course.java.stepper.dd.api.DataDefinition;
 import mta.course.java.stepper.flow.definition.api.FlowDefinition;
+import mta.course.java.stepper.step.api.DataCapsule;
+import mta.course.java.stepper.step.api.DataCapsuleImpl;
 import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 import mta.course.java.stepper.step.api.DataNecessity;
 
@@ -98,9 +100,9 @@ public class FlowExecution {
     }
 
     public boolean CheckIfExecutable() {
-        List<DataDefinitionDeclaration> flowFreeInputs = flowDefinition.getFlowFreeInputs();
-        for (DataDefinitionDeclaration input : flowFreeInputs) {
-            if (input.necessity() == DataNecessity.MANDATORY && !freeInputs.containsKey(input.getName()))
+        Map<String, DataCapsuleImpl> flowFreeInputs = flowDefinition.getFlowFreeInputs();
+        for (DataCapsuleImpl input : flowFreeInputs.values()) {
+            if (input.getDataDefinitionDeclaration().necessity() == DataNecessity.MANDATORY && !freeInputs.containsKey(input.getFinalName()))
                 return false;
         }
         return true;

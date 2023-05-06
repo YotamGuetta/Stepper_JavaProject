@@ -1,79 +1,110 @@
 package mta.course.java.stepper.main.ui;
 
 import mta.course.java.stepper.flow.execution.FlowExecution;
+import mta.course.java.stepper.flow.execution.FlowFullDetails;
+import mta.course.java.stepper.step.api.DataCapsule;
+import mta.course.java.stepper.step.api.DataCapsuleImpl;
 import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class FlowExecutionUI {
-    Scanner scanner;
-    FlowExecution flowExecution;
+    private Scanner scanner;
+    private FlowExecution flowExecution;
+    private Statistics statistics;
+    private FlowExecutionDetails details;
 
-    public FlowExecutionUI( FlowExecution flowExecution){
+    public FlowExecutionUI( FlowExecution flowExecution, Scanner scanner, Statistics statistics, FlowExecutionDetails details){
         this.flowExecution = flowExecution;
-        this.scanner = new Scanner(System.in).useDelimiter("\n");
+        this.scanner = scanner.useDelimiter("\n");
+        this.statistics = statistics;
+        this.details = details;
     }
-    public boolean GetFreeInputs(){
+    public boolean GetFreeInputs() {
         boolean executable = false;
         int inputNumber = -1;
-        List<DataDefinitionDeclaration> inputs = flowExecution.getFlowDefinition().getFlowFreeInputs();
-        while(true) {
-            if(!executable){
+        Map<String, DataCapsuleImpl> inputs = flowExecution.getFlowDefinition().getFlowFreeInputs();
+        List<String> inputsKeys = new ArrayList<>(inputs.keySet());
+        while (true) {
+            if (!executable) {
                 executable = flowExecution.CheckIfExecutable();
             }
             System.out.println("Pick an input out of the list:");
 
             System.out.println("1) Start flow");
 
-            for (int i = 0; i < inputs.size(); i++) {
-                System.out.println((i + 2) + ") " + inputs.get(i).getName() +"= "+flowExecution.getInputValue(inputs.get(i).getName())+ " (Class: " + inputs.get(i).dataDefinition().getType().getSimpleName() + ", Necessity: "  + inputs.get(i).necessity() + ") .");
+            int i = 2;
+            for (String key : inputsKeys) {
+                DataDefinitionDeclaration inputData = inputs.get(key).getDataDefinitionDeclaration();
+                System.out.println(i + ") " + inputData.userString() + " = " + flowExecution.getFreeInputs().get(key) + " (Class: " + inputData.dataDefinition().getType().getSimpleName() + ", Necessity: " + inputData.necessity() + ") .");
+                i++;
             }
             System.out.println("0) Go back.");
+            System.out.println("-1) Show history details");
+            System.out.println("-2) Show statistics");
 
-
-            inputNumber = scanner.nextInt();
+            try {
+                inputNumber = scanner.nextInt();
+            } catch (InputMismatchException e) {
+                String buffer = scanner.next();
+                System.out.println("Please enter a valid number");
+                continue;
+            }
             if (inputNumber == 0) {
                 return false;
             }
             if (inputNumber == 1) {
-                if(executable)
+                if (executable)
                     return true;
                 else {
                     System.out.println("Not all mandatory inputs are given");
                     continue;
                 }
             }
-            DataDefinitionDeclaration chosenInput = inputs.get(inputNumber - 2);
-            if (chosenInput.dataDefinition().isUserFriendly()) {
+            if(inputNumber == -2){
+                statistics.Show();
+                continue;
+            }
+            if(inputNumber == -1){
+                details.ChooseDetailsToShow(scanner);
+                continue;
+            }
+            if (inputNumber > inputsKeys.size() + 2 || inputNumber < 0) {
+                System.out.println("Please enter a valid choice");
+                continue;
+            }
 
-                System.out.println("Enter a " + chosenInput.dataDefinition().getType().getSimpleName() + " :");
+            DataCapsuleImpl chosenInput = inputs.get(inputsKeys.get(inputNumber - 2));
+            DataDefinitionDeclaration dataDefinition = chosenInput.getDataDefinitionDeclaration();
+            if (dataDefinition.dataDefinition().isUserFriendly()) {
 
-                if (chosenInput.dataDefinition().getType() == Integer.class) {
-                    int inputInt = scanner.nextInt();
-                    flowExecution.addFreeInput(chosenInput.getName(), inputInt);
+                System.out.println("Enter a " + dataDefinition.dataDefinition().getType().getSimpleName() + " :");
+
+                if (dataDefinition.dataDefinition().getType() == Integer.class) {
+                    try {
+                        int inputInt = scanner.nextInt();
+                        flowExecution.addFreeInput(chosenInput.getFinalName(), inputInt);
+                    } catch (Exception e) {
+                        String buffer = scanner.next();
+                        System.out.println("Not a number");
+                    }
                 }
-                if (chosenInput.dataDefinition().getType() == Double.class) {
+                if (dataDefinition.dataDefinition().getType() == Double.class) {
                     try {
                         double inputDouble = scanner.nextDouble();
-                        flowExecution.addFreeInput(chosenInput.getName(), inputDouble);
+                        flowExecution.addFreeInput(chosenInput.getFinalName(), inputDouble);
                     } catch (Exception e) {
+                        String buffer = scanner.next();
                         System.out.println("Not a double");
                     }
                 }
-                if (chosenInput.dataDefinition().getType() == String.class) {
-                    String inputStr="";
-
-                    //inputStr += scanner.nextLine();
+                if (dataDefinition.dataDefinition().getType() == String.class) {
+                    String inputStr = "";
                     inputStr += scanner.skip("\n").nextLine();
-                   // }
-                    //String inputStr = scanner.nextLine();
-
-                    flowExecution.addFreeInput(chosenInput.getName(), inputStr);
+                    flowExecution.addFreeInput(chosenInput.getFinalName(), inputStr);
                 }
 
             }
-
 
         }
     }

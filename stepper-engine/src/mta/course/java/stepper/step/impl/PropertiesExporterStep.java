@@ -15,19 +15,18 @@ public class PropertiesExporterStep extends AbstractStepDefinition {
     public PropertiesExporterStep() {
         super("Properties Exporter", true);
         // step inputs
-        addInput(new DataDefinitionDeclarationImpl("SOURCE", DataNecessity.MANDATORY, "Source data", DataDefinitionRegistry.RELATION));
+        addInput(new DataDefinitionDeclarationImpl("SOURCE",super.name(), DataNecessity.MANDATORY, "Source data", DataDefinitionRegistry.RELATION));
 
         // step outputs
-        addOutput(new DataDefinitionDeclarationImpl("RESULT", DataNecessity.NA, "Properties export result", DataDefinitionRegistry.STRING));
+        addOutput(new DataDefinitionDeclarationImpl("RESULT",super.name(), DataNecessity.NA, "Properties export result", DataDefinitionRegistry.STRING));
 
     }
 
     private String convertStringListToProperties( List<String> keys, List<String> values){
         StringBuilder result = new StringBuilder();
         for(int i=0; i<keys.size(); i++){
-            result.append("row-"+i+".").append(keys.get(i)).append("=").append(values.get(i));
+            result.append("row-"+i+".").append(keys.get(i)).append("=").append(values.get(i)).append("\n");
         }
-        result.append("\n");
 
         return result.toString();
     }
@@ -40,8 +39,8 @@ public class PropertiesExporterStep extends AbstractStepDefinition {
     }
 
     @Override
-    public StepResult invoke(StepExecutionContext context) {
-        RelationData source = context.getDataValue("SOURCE", RelationData.class);
+    public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
+        RelationData source = context.getDataValue("SOURCE", stepFinaleName , RelationData.class);
 
         context.storeStepLogLine("About to process " + source.size() + " lines of data");
 
@@ -55,7 +54,7 @@ public class PropertiesExporterStep extends AbstractStepDefinition {
         context.storeStepLogLine("Extracted total of " + countWords(result.toString()));
 
         // outputs
-        context.storeDataValue("RESULT", result);
+        context.storeDataValue("RESULT", stepFinaleName, result.toString());
 
         if (source.size() == 0) {
             addSummery("WARNING: The relation is empty");

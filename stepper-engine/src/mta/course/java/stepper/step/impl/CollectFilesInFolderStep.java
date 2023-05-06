@@ -21,12 +21,12 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
         super("Collect Files In Folder", true);
 
         // step inputs
-        addInput(new DataDefinitionDeclarationImpl("FOLDER_NAME", DataNecessity.MANDATORY, "Folder name to scan", DataDefinitionRegistry.STRING));
-        addInput(new DataDefinitionDeclarationImpl("FILTER", DataNecessity.OPTIONAL, "Filter only these files", DataDefinitionRegistry.STRING));
+        addInput(new DataDefinitionDeclarationImpl("FOLDER_NAME",super.name(), DataNecessity.MANDATORY, "Folder name to scan", DataDefinitionRegistry.STRING));
+        addInput(new DataDefinitionDeclarationImpl("FILTER",super.name(), DataNecessity.OPTIONAL, "Filter only these files", DataDefinitionRegistry.STRING));
 
         // step outputs
-        addOutput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.NA, "Files list", DataDefinitionRegistry.LIST));
-        addOutput(new DataDefinitionDeclarationImpl("TOTAL_FOUND", DataNecessity.NA, "Total files found", DataDefinitionRegistry.NUMBER));
+        addOutput(new DataDefinitionDeclarationImpl("FILES_LIST",super.name(), DataNecessity.NA, "Files list", DataDefinitionRegistry.LIST));
+        addOutput(new DataDefinitionDeclarationImpl("TOTAL_FOUND",super.name(), DataNecessity.NA, "Total files found", DataDefinitionRegistry.NUMBER));
     }
 
     private StepResult stepResult(StepResult result, StepExecutionContext context, String msg, String directory) {
@@ -43,9 +43,9 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
         return result;
     }
     @Override
-    public StepResult invoke(StepExecutionContext context) {
-        String directory = context.getDataValue("FOLDER_NAME", String.class);
-        String filter = context.getDataValue("FILTER", String.class);
+    public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
+        String directory = context.getDataValue("FOLDER_NAME",stepFinaleName, String.class);
+        String filter = context.getDataValue("FILTER",stepFinaleName, String.class);
 
         int countFiles = 0;
         ListData<FileData> listOfFiles = new ListData<>();
@@ -75,8 +75,8 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
             context.storeStepLogLine("Found " + countFiles + " files in folder matching the filter");
 
             // outputs
-            context.storeDataValue("FILES_LIS", listOfFiles);
-            context.storeDataValue("TOTAL_FOUND", countFiles);
+            context.storeDataValue("FILES_LIST", stepFinaleName, listOfFiles);
+            context.storeDataValue("TOTAL_FOUND", stepFinaleName, countFiles);
 
         } catch (Exception e) {
             return stepResult(StepResult.FAILURE, context, "the folder does not exist", directory);

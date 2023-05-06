@@ -17,23 +17,23 @@ public class FilesDeleterStep extends AbstractStepDefinition {
         super("Files Deleter", false);
 
         // step inputs
-        addInput(new DataDefinitionDeclarationImpl("FILES_LIST", DataNecessity.MANDATORY, "Files to delete", DataDefinitionRegistry.LIST));
+        addInput(new DataDefinitionDeclarationImpl("FILES_LIST",super.name(), DataNecessity.MANDATORY, "Files to delete", DataDefinitionRegistry.LIST));
 
         // step outputs
-        addOutput(new DataDefinitionDeclarationImpl("DELETED_LIST", DataNecessity.NA, "Files failed to be deleted", DataDefinitionRegistry.LIST));
-        addOutput(new DataDefinitionDeclarationImpl("DELETION_STATS", DataNecessity.NA, "Deletion summary results", DataDefinitionRegistry.MAPPING));
+        addOutput(new DataDefinitionDeclarationImpl("DELETED_LIST",super.name(), DataNecessity.NA, "Files failed to be deleted", DataDefinitionRegistry.LIST));
+        addOutput(new DataDefinitionDeclarationImpl("DELETION_STATS",super.name(), DataNecessity.NA, "Deletion summary results", DataDefinitionRegistry.MAPPING));
     }
 
     @Override
-    public StepResult invoke(StepExecutionContext context) {
+    public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
 
-        String directory = context.getDataValue("FOLDER_NAME", String.class);
-        String filter = context.getDataValue("FILTER", String.class);
+        String directory = context.getDataValue("FOLDER_NAME",stepFinaleName, String.class);
+        String filter = context.getDataValue("FILTER",stepFinaleName, String.class);
 
         int countFilesDeleted = 0;
         int countFilesFailed = 0;
 
-        ListData<FileData> listOfFiles = context.getDataValue("FILES_LIS", ListData .class);
+        ListData<FileData> listOfFiles = context.getDataValue("FILES_LIS",stepFinaleName, ListData .class);
         ListData<FileData> failedToDelete = new ListData<>();
 
         context.storeStepLogLine("About to start delete "+listOfFiles.size()+" files");
@@ -55,8 +55,8 @@ public class FilesDeleterStep extends AbstractStepDefinition {
         MappingData<Number,Number> pair = new MappingData<>(countFilesDeleted, countFilesFailed);
 
         // outputs
-        context.storeDataValue("DELETED_LIST", failedToDelete);
-        context.storeDataValue("DELETION_STATS", pair);
+        context.storeDataValue("DELETED_LIST", stepFinaleName, failedToDelete);
+        context.storeDataValue("DELETION_STATS", stepFinaleName, pair);
 
         if(failedToDelete.isEmpty()) {
             addSummery("SUCCESS: All The files where deleted");

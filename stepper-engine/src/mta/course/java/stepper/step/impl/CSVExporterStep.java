@@ -17,10 +17,10 @@ public class CSVExporterStep extends AbstractStepDefinition {
         super("CSV Exporter", true);
 
         // step inputs
-        addInput(new DataDefinitionDeclarationImpl("SOURCE", DataNecessity.MANDATORY, "Source data", DataDefinitionRegistry.RELATION));
+        addInput(new DataDefinitionDeclarationImpl("SOURCE",super.name(), DataNecessity.MANDATORY, "Source data", DataDefinitionRegistry.RELATION));
 
         // step outputs
-        addOutput(new DataDefinitionDeclarationImpl("RESULT", DataNecessity.NA, "CSV export result", DataDefinitionRegistry.STRING));
+        addOutput(new DataDefinitionDeclarationImpl("RESULT",super.name(), DataNecessity.NA, "CSV export result", DataDefinitionRegistry.STRING));
     }
 
     private String convertStringListToCSV( List<String> stringsToCon){
@@ -35,11 +35,11 @@ public class CSVExporterStep extends AbstractStepDefinition {
         return result.toString();
     }
     @Override
-    public StepResult invoke(StepExecutionContext context) {
+    public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
         addRunTime(System.currentTimeMillis());
         StringBuilder result;
         List<String> row = new ArrayList<>();
-        RelationData source = context.getDataValue("SOURCE", RelationData.class);
+        RelationData source = context.getDataValue("SOURCE",super.name(), RelationData.class);
 
         context.storeStepLogLine("About to process "+source.size()+" lines of data");
 
@@ -50,7 +50,7 @@ public class CSVExporterStep extends AbstractStepDefinition {
         }
 
         // outputs
-        context.storeDataValue("RESULT", result);
+        context.storeDataValue("RESULT", stepFinaleName, result.toString());
 
         if(source.size() == 0){
             addSummery("WARNING: The relation is empty");

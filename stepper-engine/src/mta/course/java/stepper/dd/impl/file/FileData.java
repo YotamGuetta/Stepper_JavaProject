@@ -8,19 +8,32 @@ import java.nio.file.Path;
 public class FileData {
     private final File file;
 
-    public  FileData(String directory){
+    public FileData(String directory) {
         file = new File(directory);
     }
-    public  FileData(Path path){ file = new File(path.toString()); }
-    public  boolean exists(){
+
+    public FileData(Path path) {
+        file = new File(path.toString());
+    }
+
+    public boolean exists() {
         return file.exists();
     }
-    public boolean delete() {return file.delete();}
-    public boolean addPrefixAndPrefix(String prefix, String suffix) {
-        File newFile = new File(prefix + file.getName() + suffix);
+
+    public boolean delete() {
+        return file.delete();
+    }
+
+    public boolean addPrefixAndSuffix(String prefix, String suffix) {
+        if(prefix == null)
+            prefix="";
+        if(suffix == null)
+            suffix="";
+        File newFile = new File(file.getParentFile(),prefix + file.getName() + suffix);
         return file.renameTo(newFile);
     }
-    public String getLineFromFile(int lineNumber) throws Exception{
+
+    public String getLineFromFile(int lineNumber) throws Exception {
         try (BufferedReader reader = new BufferedReader(new FileReader(file.getName()))) {
             String line = null;
             int currentLineNumber = 0;
@@ -31,11 +44,9 @@ public class FileData {
                 }
             }
             return null;// line number not found
-
         }
-
-
     }
+
     @Override
     public String toString() {
         return file.getName();
