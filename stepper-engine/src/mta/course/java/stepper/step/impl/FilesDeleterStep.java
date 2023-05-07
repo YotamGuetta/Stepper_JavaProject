@@ -27,13 +27,10 @@ public class FilesDeleterStep extends AbstractStepDefinition {
     @Override
     public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
 
-        String directory = context.getDataValue("FOLDER_NAME",stepFinaleName, String.class);
-        String filter = context.getDataValue("FILTER",stepFinaleName, String.class);
-
         int countFilesDeleted = 0;
         int countFilesFailed = 0;
 
-        ListData<FileData> listOfFiles = context.getDataValue("FILES_LIS",stepFinaleName, ListData .class);
+        ListData<FileData> listOfFiles = context.getDataValue("FILES_LIST",stepFinaleName, ListData .class);
         ListData<FileData> failedToDelete = new ListData<>();
 
         context.storeStepLogLine("About to start delete "+listOfFiles.size()+" files");

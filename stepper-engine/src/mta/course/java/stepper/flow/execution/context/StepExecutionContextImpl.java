@@ -3,14 +3,9 @@ package mta.course.java.stepper.flow.execution.context;
 import javafx.util.Pair;
 import mta.course.java.stepper.alias.AliasMapping;
 import mta.course.java.stepper.dd.api.DataDefinition;
-import mta.course.java.stepper.dd.impl.DataDefinitionRegistry;
 import mta.course.java.stepper.flow.definition.api.FlowDefinition;
-import mta.course.java.stepper.flow.definition.api.FlowDefinitionImpl;
-import mta.course.java.stepper.flow.definition.api.StepUsageDeclaration;
-import mta.course.java.stepper.step.StepDefinitionRegistry;
 import mta.course.java.stepper.step.api.DataCapsuleImpl;
 import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
-import mta.course.java.stepper.step.api.StepDefinition;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,9 +49,8 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 
             return expectedDataType.cast(aValue);
         } else {
+            logLines.append("Error: Cannot assign ").append(expectedDataType).append("to").append(theExpectedDataDefinition.getType().getSimpleName()).append("\n");
 
-
-            // error handling of some sort...
         }
 
         return null;
@@ -64,7 +58,6 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 
     @Override
     public boolean storeDataValue(String dataName, String step, Object value) {
-        String dataOriginalName = aliasMapping.getTrueAliasValue(dataName);
         String dataFinalName = aliasMapping.getDataAliasName(step, dataName);
         // assuming that from the data name we can get to its data definition
         DataDefinition theData = availableDataValues.get(dataFinalName);
@@ -73,7 +66,8 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         if (theData.getType().isAssignableFrom(value.getClass())) {
             dataValues.put(dataFinalName, value);
         } else {
-            // error handling of some sort...
+            logLines.append("Error: Cannot assign ").append(theData).append("to").append(value.getClass().getSimpleName()).append("\n");
+            return  true;
         }
 
         return false;

@@ -12,8 +12,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-import static mta.course.java.stepper.main.Main.*;
-
 public class ReadFlowFromFile {
     private final static String JAXB_XML_GAME_PACKAGE_NAME = "mta.course.java.stepper.schema";
     private final Set<String> flowsNames;
@@ -38,9 +36,7 @@ public class ReadFlowFromFile {
             int index = xmlFile.lastIndexOf('.');
             if (index > 0) {
                 String extension = xmlFile.substring(index + 1);
-                if (extension.equals("xml")){
-                    return true;
-                }
+                return extension.equals("xml");
             }
         }
         return false;

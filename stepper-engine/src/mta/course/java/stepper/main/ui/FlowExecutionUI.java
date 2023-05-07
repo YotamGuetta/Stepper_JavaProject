@@ -6,6 +6,7 @@ import mta.course.java.stepper.step.api.DataCapsule;
 import mta.course.java.stepper.step.api.DataCapsuleImpl;
 import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 
+import java.io.Console;
 import java.util.*;
 
 public class FlowExecutionUI {
@@ -22,13 +23,14 @@ public class FlowExecutionUI {
     }
     public boolean GetFreeInputs() {
         boolean executable = false;
-        int inputNumber = -1;
+        int inputNumber;
         Map<String, DataCapsuleImpl> inputs = flowExecution.getFlowDefinition().getFlowFreeInputs();
         List<String> inputsKeys = new ArrayList<>(inputs.keySet());
         while (true) {
             if (!executable) {
                 executable = flowExecution.CheckIfExecutable();
             }
+            System.out.println();
             System.out.println("Pick an input out of the list:");
 
             System.out.println("1) Start flow");
@@ -42,14 +44,15 @@ public class FlowExecutionUI {
             System.out.println("0) Go back.");
             System.out.println("-1) Show history details");
             System.out.println("-2) Show statistics");
-
+            System.out.println();
             try {
-                inputNumber = scanner.nextInt();
-            } catch (InputMismatchException e) {
-                String buffer = scanner.next();
+                inputNumber = UtilitiesUI.getNumberFromUser(scanner);
+            } catch (IndexOutOfBoundsException | NumberFormatException e) {
                 System.out.println("Please enter a valid number");
                 continue;
             }
+
+
             if (inputNumber == 0) {
                 return false;
             }
@@ -61,15 +64,15 @@ public class FlowExecutionUI {
                     continue;
                 }
             }
-            if(inputNumber == -2){
+            if (inputNumber == -2) {
                 statistics.Show();
                 continue;
             }
-            if(inputNumber == -1){
+            if (inputNumber == -1) {
                 details.ChooseDetailsToShow(scanner);
                 continue;
             }
-            if (inputNumber > inputsKeys.size() + 2 || inputNumber < 0) {
+            if (inputNumber > inputsKeys.size() + 1 || inputNumber < 0) {
                 System.out.println("Please enter a valid choice");
                 continue;
             }
@@ -82,20 +85,20 @@ public class FlowExecutionUI {
 
                 if (dataDefinition.dataDefinition().getType() == Integer.class) {
                     try {
-                        int inputInt = scanner.nextInt();
+                        int inputInt = UtilitiesUI.getNumberFromUser(scanner);
                         flowExecution.addFreeInput(chosenInput.getFinalName(), inputInt);
-                    } catch (Exception e) {
-                        String buffer = scanner.next();
+                    } catch (IndexOutOfBoundsException | NumberFormatException e) {
                         System.out.println("Not a number");
+                        continue;
                     }
                 }
                 if (dataDefinition.dataDefinition().getType() == Double.class) {
                     try {
-                        double inputDouble = scanner.nextDouble();
+                        int inputDouble = UtilitiesUI.getNumberFromUser(scanner);
                         flowExecution.addFreeInput(chosenInput.getFinalName(), inputDouble);
-                    } catch (Exception e) {
-                        String buffer = scanner.next();
+                    } catch (IndexOutOfBoundsException | NumberFormatException e) {
                         System.out.println("Not a double");
+                        continue;
                     }
                 }
                 if (dataDefinition.dataDefinition().getType() == String.class) {

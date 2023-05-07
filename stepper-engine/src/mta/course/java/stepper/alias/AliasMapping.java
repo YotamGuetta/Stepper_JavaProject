@@ -1,9 +1,6 @@
 package mta.course.java.stepper.alias;
 
-import javafx.util.Pair;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AliasMapping {
@@ -33,8 +30,5 @@ public class AliasMapping {
         }
 
         return  source;
-    }
-    public Map<String, String> getAllAliasOfStep(String stepName){
-        return aliasingMappingByStep.get(stepName);
     }
 }

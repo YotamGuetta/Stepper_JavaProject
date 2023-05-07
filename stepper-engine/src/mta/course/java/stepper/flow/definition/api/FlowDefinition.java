@@ -2,7 +2,6 @@ package mta.course.java.stepper.flow.definition.api;
 
 import javafx.util.Pair;
 import mta.course.java.stepper.step.api.DataCapsuleImpl;
-import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 
 import java.util.InvalidPropertiesFormatException;
 import java.util.List;

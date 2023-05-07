@@ -5,6 +5,7 @@ import mta.course.java.stepper.flow.definition.api.StepUsageDeclaration;
 import mta.course.java.stepper.flow.execution.FlowExecution;
 import mta.course.java.stepper.step.api.DataDefinitionDeclaration;
 
+import java.io.Console;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,7 +34,13 @@ public class FlowsDetailesUI {
             System.out.println("-1) Show history details ");
             System.out.println("-2) Show Statistics");
 
-            userInput= scanner.nextInt();
+            try {
+                userInput = UtilitiesUI.getNumberFromUser(scanner);
+            }
+            catch (IndexOutOfBoundsException |NumberFormatException e){
+                System.out.println("Please enter a valid number");
+                continue;
+            }
             if(userInput == 0)
                 return null;
             if(userInput == -1){
@@ -55,7 +62,13 @@ public class FlowsDetailesUI {
                 System.out.println("Choose this flow?");
                 System.out.println("1) continue");
                 System.out.println("0) Go back");
-                userInput = scanner.nextInt();
+                try {
+                    userInput = UtilitiesUI.getNumberFromUser(scanner);
+                }
+                catch (IndexOutOfBoundsException |NumberFormatException e){
+                    System.out.println("Please enter a valid number");
+                    continue;
+                }
                 if (userInput == 0)
                     break;
                 if (userInput == 1)

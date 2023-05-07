@@ -1,10 +1,7 @@
 package mta.course.java.stepper.dd.impl.mapping;
 
 import javafx.util.Pair;
-import mta.course.java.stepper.dd.api.DataDefinition;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class MappingData<car, cdr> {
     private final Pair<car, cdr> map;
