@@ -73,7 +73,7 @@ public class StepperUI {
             try {
                  flows = readFlowFromFile.getFlowDefinitions(xmlFile);
             } catch (JAXBException | FileNotFoundException | InvalidPropertiesFormatException e) {
-                System.out.println("Invalid file format"+ e.getMessage());
+                System.out.println("Invalid file format "+ e.getMessage());
                 continue;
             } catch (IOException e) {
                 System.out.println("File not found");

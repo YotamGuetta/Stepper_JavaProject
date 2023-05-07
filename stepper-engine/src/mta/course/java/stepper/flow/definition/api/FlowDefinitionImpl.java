@@ -59,8 +59,11 @@ public class FlowDefinitionImpl implements FlowDefinition {
                 throw new InvalidPropertiesFormatException("input "+input.getFinalName()+" is not user friendly");
         }
     }
-    private void addFlowOutputs( List<DataCapsuleImpl> Outputs) {
+    private void addFlowOutputs( List<DataCapsuleImpl> Outputs) throws  InvalidPropertiesFormatException{
         for (DataCapsuleImpl output : Outputs) {
+            if(flowOutputs.contains(output)){
+                throw new InvalidPropertiesFormatException("Contains two outputs with the same name");
+            }
             flowOutputs.add(output);
             flowFreeOutputs.add(output.getFinalName());
         }

@@ -26,7 +26,6 @@ public class ReadFlowFromFile {
     private  Map<String, StepDefinition> stepNameToDefinitionMap(){
         Map<String, StepDefinition> NameToDef = new HashMap<>();
         for(Object value : StepDefinitionRegistry.values()){
-            // StepDefinition curr = StepDefinitionRegistry.valueOf(value.toString());
             NameToDef.put(StepDefinitionRegistry.valueOf(value.toString()).getName(), StepDefinitionRegistry.valueOf(value.toString()));
         }
         return NameToDef;
