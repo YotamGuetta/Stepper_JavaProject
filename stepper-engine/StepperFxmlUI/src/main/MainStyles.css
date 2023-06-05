@@ -1,0 +1,39 @@
+@Font-face {
+    font-family: dfont;
+    src: url("diablo-font.ttf");
+}
+.root{
+    -fx-border-color: #c4bdbd;
+    -fx-font-family: Diablo;
+}
+.button:hover .buttonText{
+    -fx-font-size: 12px;
+    -fx-fill: linear-gradient(to bottom, yellow, red);
+}
+.button:pressed .buttonImage{
+    -fx-opacity: 1.0;
+}
+.tab-pane:top .tab-header-area .headers-region .tab:top{
+    -fx-background-color: #9b8c6e;
+}
+.tab:hover .tab-label {
+    -fx-text-fill: linear-gradient(to bottom, yellow, red);
+}
+.tab:selected .tab-label {
+    -fx-text-fill: linear-gradient(to bottom, yellow, red);
+}
+.tab-pane:top .tab-header-area .headers-region .tab:selected:top{
+    -fx-background-color: #6c6c6c;
+}
+.background-part{
+    -fx-background-image: url('d2-background.jpg');
+    -fx-background-size: cover;
+}
+#top-half{
+    -fx-background-image: None;
+    -fx-background-color: Black;
+}
+.tab-pane:top .tab-header-area .tab-header-background{
+    -fx-background-image: url('thin_bg.gif');
+    -fx-background-size: cover;
+}

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox id="project-background" stylesheets="@MainStyles.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.MainController">
+   <children>
+    <AnchorPane maxHeight="150.0" minHeight="50.0" minWidth="100.0" prefHeight="77.0">
+         <children>
+            <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <content>
+                <AnchorPane minHeight="50.0" minWidth="200.0" prefHeight="100.0" prefWidth="596.0">
+                     <children>
+                        <VBox id="top-half" alignment="TOP_CENTER" styleClass="background-part" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <ImageView fitHeight="30.0" fitWidth="102.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@StepperTitleGIF.gif" />
+                                 </image>
+                              </ImageView>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                                 <children>
+                                    <Button fx:id="LoadFileButton" minHeight="16.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#OpenFileButtonAction" prefHeight="23.0" prefWidth="80.0">
+                                       <graphic>
+                                          <StackPane>
+                                             <children>
+                                                <ImageView fitHeight="25.0" fitWidth="120.0" opacity="0.8" pickOnBounds="true" preserveRatio="true" styleClass="buttonImage">
+                                                   <image>
+                                                      <Image url="@d2-Button.jpg" />
+                                                   </image>
+                                                </ImageView>
+                                                <Text id="LoadFileText" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="buttonText" text="Load File" />
+                                             </children>
+                                          </StackPane>
+                                       </graphic>
+                                    </Button>
+                                    <TextField fx:id="LoadFileTextField" minHeight="25.0" minWidth="50.0" prefHeight="25.0" prefWidth="400.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="20.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+    <AnchorPane prefHeight="300.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+         <children>
+            <ScrollPane fitToHeight="true" fitToWidth="true" prefViewportHeight="300.0" prefViewportWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <content>
+                  <AnchorPane minHeight="300.0" minWidth="600.0" prefHeight="300.0" prefWidth="600.0">
+                     <children>
+                        <TabPane centerShape="false" layoutX="103.0" rotateGraphic="true" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="1.7976931324862315E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                          <tabs>
+                            <Tab text="Flow Defenition">
+                                 <content>
+                                    <HBox>
+                                       <children>
+                                          <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0">
+                                            <content>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" styleClass="background-part">
+                                                   <children>
+                                                      <VBox layoutX="37.0" layoutY="-36.0" prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                         <children>
+                                                            <Label fx:id="ErrorFileLoadedLable" textFill="RED" />
+                                                         </children></VBox>
+                                                   </children></AnchorPane>
+                                            </content>
+                                          </ScrollPane>
+                                          <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                                            <content>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0">
+                                                   <children>
+                                                      <GridPane id="bottom-half" hgap="10.0" styleClass="background-part" vgap="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <padding>
+                                                            <Insets left="10.0" />
+                                                         </padding>
+                                                      </GridPane>
+                                                   </children>
+                                                </AnchorPane>
+                                            </content>
+                                          </ScrollPane>
+                                       </children>
+                                    </HBox>
+                                 </content>
+                              </Tab>
+                            <Tab text="Flow Execution" />
+                              <Tab text="Flow History" />
+                              <Tab text="Statistics" />
+                          </tabs>
+                        </TabPane>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

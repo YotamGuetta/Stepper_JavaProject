@@ -1,0 +1,16 @@
+.root{
+    -fx-border-color: #c4bdbd;
+    -fx-font-family: Diablo;
+
+}
+#container{
+    -fx-border-color: Gray;
+    -fx-border-width: 3px;
+}
+#TextGrid{
+    -fx-background-color: linear-gradient(to bottom, #505048, #362d2d);
+}
+#TextGrid .label{
+    -fx-font-size: 10px;
+    -fx-fill: linear-gradient(to bottom, yellow, red);
+}
