@@ -1,17 +1,22 @@
 @Font-face {
     font-family: dfont;
-    src: url("diablo-font.ttf");
+    src: url("Resources/diablo-font.ttf");
 }
 .root{
     -fx-border-color: #c4bdbd;
     -fx-font-family: Diablo;
 }
-.button:hover .buttonText{
-    -fx-font-size: 12px;
-    -fx-fill: linear-gradient(to bottom, yellow, red);
+.button{
+    -fx-background-image: url('Resources/d2-Button.jpg');
+    -fx-text-fill: Black;
+    -fx-opacity: 1;
+    -fx-font-size: 10px;
 }
-.button:pressed .buttonImage{
-    -fx-opacity: 1.0;
+.button:hover{
+    -fx-text-fill: linear-gradient(to bottom, yellow, red);
+}
+.button:pressed{
+    -fx-opacity: 0.7;
 }
 .tab-pane:top .tab-header-area .headers-region .tab:top{
     -fx-background-color: #9b8c6e;
@@ -26,14 +31,23 @@
     -fx-background-color: #6c6c6c;
 }
 .background-part{
-    -fx-background-image: url('d2-background.jpg');
+    -fx-background-image: url('Resources/d2-background.jpg');
     -fx-background-size: cover;
+}
+.button:disabled {
+    -fx-opacity: 0.5;
 }
 #top-half{
     -fx-background-image: None;
     -fx-background-color: Black;
 }
 .tab-pane:top .tab-header-area .tab-header-background{
-    -fx-background-image: url('thin_bg.gif');
+    -fx-background-image: url('Resources/thin_bg.gif');
     -fx-background-size: cover;
+}
+#bottom-half .label {
+    -fx-text-fill: linear-gradient(to bottom, yellow, red);
+}
+.label{
+    -fx-text-fill: linear-gradient(to bottom, yellow, red);
 }

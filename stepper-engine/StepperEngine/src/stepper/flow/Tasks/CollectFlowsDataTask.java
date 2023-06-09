@@ -9,16 +9,15 @@ import java.util.List;
 import java.util.function.Consumer;
 
 public class CollectFlowsDataTask extends Task<Boolean> {
-    private  String fileName;
-    private  Consumer<FlowDefinition> AddFlow;
-    private  Consumer<String> onError;
-    private  Consumer<Runnable> onSuccess;
-    public CollectFlowsDataTask(String fileName, Consumer<FlowDefinition> AddFlow, Consumer<String> onError, Consumer<Runnable> onSuccess) {
+    private final String fileName;
+    private final Consumer<FlowDefinition> AddFlow;
+    private final Consumer<Exception> onError;
+    private final Runnable onSuccess;
+    public CollectFlowsDataTask(String fileName, Consumer<FlowDefinition> AddFlow, Consumer<Exception> onError, Runnable onSuccess) {
         this.fileName =fileName;
         this.AddFlow = AddFlow;
         this.onError = onError;
         this.onSuccess = onSuccess;
-
     }
 
     @Override
@@ -26,11 +25,11 @@ public class CollectFlowsDataTask extends Task<Boolean> {
         ReadFlowFromFile readFlowFromFile = new ReadFlowFromFile();
         try{
             List<FlowDefinition> flows = readFlowFromFile.getFlowDefinitions(fileName);
+            onSuccess.run();
             flows.forEach( (flow) -> AddFlow.accept(flow));
-            onSuccess.accept(null);
         }
         catch (Exception e){
-            onError.accept(e.getMessage());
+            onError.accept(e);
         }
         return Boolean.TRUE;
     }

@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
-public class FLowExecutor {
+public class FlowExecutor {
 
     public FlowFullDetails executeFlow(FlowExecution flowExecution) {
         long startTime = System.currentTimeMillis();

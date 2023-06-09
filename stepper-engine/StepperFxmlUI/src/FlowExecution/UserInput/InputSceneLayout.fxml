@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox id="InputBackground" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" spacing="5.0" stylesheets="@InputStyle.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FlowExecution.UserInput.UserInputController">
+   <children>
+      <VBox alignment="CENTER">
+         <children>
+            <Label id="inputNameLabel" fx:id="InputNameLabel" text="TimeToSpend :" />
+            <Label id="necessityText" fx:id="necessityTextLabel" text="(Mandetory)" />
+         </children>
+      </VBox>
+      <TextField fx:id="InputValueTextField" prefHeight="30.0" prefWidth="125.0" promptText="String" />
+   </children>
+   <padding>
+      <Insets left="5.0" right="5.0" />
+   </padding>
+</HBox>

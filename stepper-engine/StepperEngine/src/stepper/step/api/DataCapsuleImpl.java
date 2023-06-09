@@ -1,6 +1,5 @@
 package stepper.step.api;
 
-import stepper.step.api.DataDefinitionDeclaration;
 public class DataCapsuleImpl implements DataCapsule {
     private final DataDefinitionDeclaration dataDefinitionDeclaration;
     private final String finalName;
@@ -22,5 +21,14 @@ public class DataCapsuleImpl implements DataCapsule {
     }
     public DataDefinitionDeclaration getDataDefinitionDeclaration(){
         return dataDefinitionDeclaration;
+    }
+    public DataNecessity IsNecessary(){
+        return  dataDefinitionDeclaration.necessity();
+    }
+    public String GetUserFriendlyName(){
+        if(dataDefinitionDeclaration.getName().equals(dataDefinitionDeclaration.getOriginalName())){
+            return dataDefinitionDeclaration.userString();
+        }
+        return dataDefinitionDeclaration.getName();
     }
 }

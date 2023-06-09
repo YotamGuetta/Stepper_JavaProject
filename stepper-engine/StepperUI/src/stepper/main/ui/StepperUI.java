@@ -1,16 +1,9 @@
 package stepper.main.ui;
 
-import javafx.util.Pair;
 import stepper.flow.definition.api.FlowDefinition;
 import stepper.flow.definition.api.ReadFlowFromFile;
-import stepper.flow.definition.api.StepUsageDeclaration;
 import stepper.flow.execution.FlowExecution;
-import stepper.flow.execution.FlowFullDetails;
-import stepper.flow.execution.runner.FLowExecutor;
-import stepper.main.ui.FlowExecutionDetails;
-import stepper.main.ui.FlowExecutionUI;
-import stepper.main.ui.FlowsDetailesUI;
-import stepper.main.ui.Statistics;
+import stepper.flow.execution.runner.FlowExecutor;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
@@ -55,7 +48,7 @@ public class StepperUI {
         }
     }
     public void RunStepper() {
-        FLowExecutor flowExecutor = new FLowExecutor();
+        FlowExecutor flowExecutor = new FlowExecutor();
         ReadFlowFromFile readFlowFromFile = new ReadFlowFromFile();
         Scanner scanner = new Scanner(System.in);
         Statistics statistics = new Statistics();
