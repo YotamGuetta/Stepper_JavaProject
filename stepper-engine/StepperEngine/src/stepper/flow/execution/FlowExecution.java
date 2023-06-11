@@ -75,7 +75,6 @@ public class FlowExecution {
     public void addFreeInput(String name, Object value) {
         freeInputs.put(name, value);
     }
-
     public Map<String, Object> getFreeInputs() {
         return freeInputs;
     }
