@@ -48,12 +48,12 @@ public class FilesContentExtractorStep extends AbstractStepDefinition {
                 line = file.getLineFromFile(lineNumber);
                 if (line.isEmpty()) {
                     line = "Not such line";
-                    context.storeStepLogLine("Problem extracting line number " + lineNumber + " from file " + file);
+                    context.storeStepLogLine("Problem extracting line number " + lineNumber + " from file " + file, stepFinaleName);
                 }
 
             } catch (Exception e) {
                 line = " File not found";
-                context.storeStepLogLine("Problem extracting line number " + lineNumber + " from file " + file);
+                context.storeStepLogLine("Problem extracting line number " + lineNumber + " from file " + file, stepFinaleName);
             }
 
             relationData.set(0, countFiles + "");
@@ -70,7 +70,7 @@ public class FilesContentExtractorStep extends AbstractStepDefinition {
         addSummery("SUCCESS: All Files are renamed successfully");
         if (listOfFiles.isEmpty()) {
             addSummery("SUCCESS: the list is empty");
-            context.storeStepLogLine("the list is empty");
+            context.storeStepLogLine("the list is empty", stepFinaleName);
         }
 
         return StepResult.SUCCESS;

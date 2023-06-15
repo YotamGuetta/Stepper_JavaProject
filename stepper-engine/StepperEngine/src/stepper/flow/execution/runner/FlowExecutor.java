@@ -6,7 +6,7 @@ import javafx.util.Pair;
 import stepper.flow.definition.api.StepUsageDeclaration;
 import stepper.flow.execution.FlowExecution;
 import stepper.flow.execution.FlowExecutionResult;
-import stepper.flow.execution.FlowFullDetails;
+import stepper.dataStorage.FlowFullDetails;
 import stepper.flow.execution.context.StepExecutionContext;
 import stepper.flow.execution.context.StepExecutionContextImpl;
 import stepper.step.api.DataCapsuleImpl;
@@ -85,8 +85,7 @@ public class FlowExecutor extends Task<Boolean> {
                 result = FlowExecutionResult.WARNING;
             }
         }
-        logs.append(context.getStepLogLines());
-        flowExecution.storeLogsOfAFlowRun(logs.toString());
+
         flowExecution.storeSummeryOfAFlowRun(flowExecution.getUniqueId(), summery.toString());
         flowExecution.setFlowExecutionResult(result);
         try {
@@ -141,6 +140,8 @@ public class FlowExecutor extends Task<Boolean> {
 
             updateTitle(stepUsageDeclaration.getFinalStepName());
 
+            String stepName = stepUsageDeclaration.getFinalStepName();
+
             long singleStepRunTime = System.currentTimeMillis();
 
             try {
@@ -153,7 +154,7 @@ public class FlowExecutor extends Task<Boolean> {
 
                         final String stepResultAsFinal = stepResult.toString();
                         Platform.runLater(
-                                () -> stepUpdate.accept(new Pair<>(getTitle(), stepResultAsFinal))
+                                () -> stepUpdate.accept(new Pair<>(stepName, stepResultAsFinal))
                         );
                     }
                     break;
@@ -162,12 +163,15 @@ public class FlowExecutor extends Task<Boolean> {
 
             final String stepResultAsFinal = stepResult.toString();
             Platform.runLater(
-                    () -> stepUpdate.accept(new Pair<>(getTitle(), stepResultAsFinal))
+                    () -> stepUpdate.accept(new Pair<>(stepName, stepResultAsFinal))
             );
 
             singleStepRunTime = System.currentTimeMillis() - singleStepRunTime;
             stepUsageDeclaration.setStepRunTime(singleStepRunTime);
             stepUsageDeclaration.setStepResult(stepResult.toString());
+
+            logs.append(context.getStepLogLines(stepUsageDeclaration.getFinalStepName()));
+            flowExecution.storeLogsOfAFlowRun(logs.toString());
 
             String stepSummery = stepUsageDeclaration.getStepDefinition().getSummery();
             if (!(stepSummery == null))
@@ -183,8 +187,6 @@ public class FlowExecutor extends Task<Boolean> {
                 result = FlowExecutionResult.WARNING;
             }
         }
-        logs.append(context.getStepLogLines());
-        flowExecution.storeLogsOfAFlowRun(logs.toString());
         flowExecution.storeSummeryOfAFlowRun(flowExecution.getUniqueId(), summery.toString());
         flowExecution.setFlowExecutionResult(result);
         try {
@@ -205,7 +207,9 @@ public class FlowExecutor extends Task<Boolean> {
         flowExecution.setFlowRunTime(endTime - startTime);
         FlowFullDetails details = new FlowFullDetails();
         details.SaveData(flowExecution, context);
-        SaveFlowDetails.accept(details);
+        Platform.runLater(
+                () -> SaveFlowDetails.accept(details)
+        );
         return Boolean.TRUE;
     }
 }

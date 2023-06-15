@@ -19,12 +19,12 @@ public class FlowStepController {
     private Label stepResultLabel;
     @FXML
     private GridPane stepDataGridPane;
-    private FlowExecutionController flowExecutionController;
+    private  Consumer<String> ExpandEvent;
 
-    public void SetFlowData(String stepName, String stepResult, FlowExecutionController flowExecutionController){
+    public void SetFlowData(String stepName, String stepResult, Consumer<String> ExpandEvent){
         stepNameLabel.setText(stepName);
         stepResultLabel.setText(stepResult);
-        this.flowExecutionController = flowExecutionController;
+        this.ExpandEvent = ExpandEvent;
     }
     public void AddListenerIfClicked(Consumer<Parent> stepClickedDelegate){
        // stepDataGridPane.onMouseClickedProperty().addListener((observable, oldValue, newValue) -> {
@@ -33,6 +33,6 @@ public class FlowStepController {
     }
     @FXML
     void StepWasClicked(MouseEvent event) {
-        flowExecutionController.ExpandStepForDetails(stepNameLabel.getText());
+        ExpandEvent.accept(stepNameLabel.getText());
     }
 }

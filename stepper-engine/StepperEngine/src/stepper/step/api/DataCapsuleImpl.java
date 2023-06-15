@@ -26,9 +26,9 @@ public class DataCapsuleImpl implements DataCapsule {
         return  dataDefinitionDeclaration.necessity();
     }
     public String GetUserFriendlyName(){
-        if(dataDefinitionDeclaration.getName().equals(dataDefinitionDeclaration.getOriginalName())){
+        if(dataDefinitionDeclaration.getName().equals(finalName)){
             return dataDefinitionDeclaration.userString();
         }
-        return dataDefinitionDeclaration.getName();
+        return finalName;
     }
 }

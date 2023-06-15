@@ -39,9 +39,9 @@ public class CSVExporterStep extends AbstractStepDefinition {
         addRunTime(System.currentTimeMillis());
         StringBuilder result;
         List<String> row = new ArrayList<>();
-        RelationData source = context.getDataValue("SOURCE",super.name(), RelationData.class);
+        RelationData source = context.getDataValue("SOURCE",stepFinaleName, RelationData.class);
 
-        context.storeStepLogLine("About to process "+source.size()+" lines of data");
+        context.storeStepLogLine("About to process "+source.size()+" lines of data", stepFinaleName);
 
         result = new StringBuilder(convertStringListToCSV(source.getColumns()));
 
@@ -54,7 +54,7 @@ public class CSVExporterStep extends AbstractStepDefinition {
 
         if(source.size() == 0){
             addSummery("WARNING: The relation is empty");
-            context.storeStepLogLine(getSummery());
+            context.storeStepLogLine(getSummery(), stepFinaleName);
             addRunTime(System.currentTimeMillis() - getRunTime());
             return  StepResult.WARNING;
         }

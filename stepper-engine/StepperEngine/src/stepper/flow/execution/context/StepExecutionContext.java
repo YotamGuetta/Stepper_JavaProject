@@ -11,12 +11,10 @@ public interface StepExecutionContext {
     boolean storeDataValue(String dataName, String step, Object value);
     List<String> getAllOutputs(List<String> outputNames);
     List<String> getAllFormalOutputs(List<Pair<String, DataDefinitionDeclaration>> outputNames);
-    void storeStepLogLine(String logLine);
-    String getStepLogLines();
+    void storeStepLogLine(String logLine, String step);
+    String getStepLogLines(String stepName);
     String getStepSummaryLine();
     String getOutput(String outputName);
     void assignCustomMapping(Map<Pair<String,String>, Pair<String, String>> customMapping);
-    // some more utility methods:
-    // allow step to store log lines
-    // allow steps to declare their summary line
+    Object GetDataValueAsObject(String dataName,String step);
 }

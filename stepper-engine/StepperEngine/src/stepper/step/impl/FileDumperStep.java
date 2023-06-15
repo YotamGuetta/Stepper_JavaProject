@@ -25,13 +25,13 @@ public class FileDumperStep extends AbstractStepDefinition {
         addOutput(new DataDefinitionDeclarationImpl("RESULT", super.name(), DataNecessity.NA, "File Creation Result", DataDefinitionRegistry.STRING));
     }
 
-    private StepResult returnResult(StepExecutionContext context, StepResult result, String message){
+    private StepResult returnResult(StepExecutionContext context, StepResult result, String message, String stepFinaleName){
 
         if(result == StepResult.FAILURE ||result == StepResult.WARNING) {
             addSummery(result + ": " + message);
-            context.storeStepLogLine(getSummery());
+            context.storeStepLogLine(getSummery(), stepFinaleName);
             if (result == StepResult.FAILURE) {
-                context.storeDataValue("RESULT", super.name(), getSummery());
+                context.storeDataValue("RESULT", stepFinaleName, getSummery());
                 return result;
             }
         }
@@ -45,24 +45,24 @@ public class FileDumperStep extends AbstractStepDefinition {
         String location = context.getDataValue("FILE_NAME",stepFinaleName, String.class);
         Path path = Paths.get(location);
 
-        context.storeStepLogLine("About to create file named "+path.getFileName());
+        context.storeStepLogLine("About to create file named "+path.getFileName(), stepFinaleName);
 
         try {
             Files.createDirectories(path.getParent());
             try {
                 Files.createFile(path);
                 if(data == null || data.isEmpty()){
-                    return returnResult(context,StepResult.WARNING,"The file content is empty");
+                    return returnResult(context,StepResult.WARNING,"The file content is empty",stepFinaleName);
                 }
                 else
                     Files.write(path, data.getBytes());
             }
             catch (FileAlreadyExistsException e) {
-                return returnResult(context,StepResult.FAILURE,"The file "+path.getFileName()+" already exists");
+                return returnResult(context,StepResult.FAILURE,"The file "+path.getFileName()+" already exists",stepFinaleName);
             }
         }
         catch(IOException e){
-            return returnResult(context,StepResult.FAILURE,"The path "+location+" isn't valid or a file");
+            return returnResult(context,StepResult.FAILURE,"The path "+location+" isn't valid or a file",stepFinaleName);
         }
         // outputs
         context.storeDataValue("RESULT", stepFinaleName, "SUCCESS");

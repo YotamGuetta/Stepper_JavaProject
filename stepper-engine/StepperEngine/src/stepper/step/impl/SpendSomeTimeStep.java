@@ -22,21 +22,21 @@ public class SpendSomeTimeStep extends AbstractStepDefinition {
 
         if(seconds <= 0){
             addSummery("FAILURE: "+seconds+" is not a positive number");
-            context.storeStepLogLine(getSummery());
+            context.storeStepLogLine(getSummery(), stepFinaleName);
             return StepResult.FAILURE;
         }
 
-        context.storeStepLogLine("About to sleep for " + seconds + " seconds…");
+        context.storeStepLogLine("About to sleep for " + seconds + " seconds…", stepFinaleName);
 
         try {
             TimeUnit.SECONDS.sleep(seconds);
         } catch (InterruptedException e) {
             addSummery("WARNING: thread is interrupted while it is sleeping");
-            context.storeStepLogLine(getSummery());
+            context.storeStepLogLine(getSummery(), stepFinaleName);
             return StepResult.WARNING;
         }
 
-        context.storeStepLogLine("Done sleeping…");
+        context.storeStepLogLine("Done sleeping…", stepFinaleName);
 
         return StepResult.SUCCESS;
     }

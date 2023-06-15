@@ -42,7 +42,7 @@ public class PropertiesExporterStep extends AbstractStepDefinition {
     public StepResult invoke(StepExecutionContext context, String stepFinaleName) {
         RelationData source = context.getDataValue("SOURCE", stepFinaleName , RelationData.class);
 
-        context.storeStepLogLine("About to process " + source.size() + " lines of data");
+        context.storeStepLogLine("About to process " + source.size() + " lines of data", stepFinaleName);
 
         StringBuilder result = new StringBuilder();
         List<String> columns = source.getColumns();
@@ -51,14 +51,14 @@ public class PropertiesExporterStep extends AbstractStepDefinition {
             result.append(convertStringListToProperties(columns, source.getRowDataByColumnsOrder(i)));
         }
 
-        context.storeStepLogLine("Extracted total of " + countWords(result.toString()));
+        context.storeStepLogLine("Extracted total of " + countWords(result.toString()), stepFinaleName);
 
         // outputs
         context.storeDataValue("RESULT", stepFinaleName, result.toString());
 
         if (source.size() == 0) {
             addSummery("WARNING: The relation is empty");
-            context.storeStepLogLine(getSummery());
+            context.storeStepLogLine(getSummery(), stepFinaleName);
             return StepResult.WARNING;
         }
 

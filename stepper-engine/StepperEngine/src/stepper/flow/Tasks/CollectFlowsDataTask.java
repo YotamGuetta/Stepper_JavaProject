@@ -3,7 +3,6 @@ package stepper.flow.Tasks;
 import javafx.concurrent.Task;
 import stepper.flow.definition.api.FlowDefinition;
 import stepper.flow.definition.api.ReadFlowFromFile;
-import stepper.flow.execution.FlowFullDetails;
 
 import java.util.List;
 import java.util.function.Consumer;

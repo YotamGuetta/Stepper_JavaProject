@@ -2,7 +2,6 @@ package stepper.flow.definition.api;
 
 import javafx.util.Pair;
 import stepper.alias.AliasMapping;
-import stepper.flow.definition.api.StepUsageDeclaration;
 import stepper.step.api.DataCapsuleImpl;
 import stepper.step.api.DataDefinitionDeclaration;
 
@@ -21,6 +20,8 @@ public class FlowDefinitionImpl implements FlowDefinition {
     private  final Map<Pair<String,String>, Pair<String, String>> customMapping;
     private final Set<DataCapsuleImpl> allDataCapsules;
     private boolean isFlowReadOnly;
+    private final Map<String,Map<String,String>> flowContinuationMap;
+    private final Map<String,Object> initialValues;
 
     public FlowDefinitionImpl(String name, String description) {
         this.name = name;
@@ -33,6 +34,8 @@ public class FlowDefinitionImpl implements FlowDefinition {
         customMapping= new HashMap<>();
         formalOutputs= new HashSet<>();
         allDataCapsules = new HashSet<>();
+        flowContinuationMap=new HashMap<>();
+        initialValues =new HashMap<>();
         isFlowReadOnly = true;
     }
     public void addCustomMapping(String sourceStep, String sourceData, String targetStep, String targetData){
@@ -179,6 +182,10 @@ public class FlowDefinitionImpl implements FlowDefinition {
 
         return isFlowReadOnly;
     }
+    @Override
+    public String GetDataDefinitionAfterAliasing(String dataName, String stepName){
+        return aliasingMapping.getDataAliasName(stepName,dataName);
+    }
     public  DataCapsuleImpl getOutputDataCapsule(String outputName){
         for (DataCapsuleImpl data : getAllFlowOutputs()){
             if(data.getFinalName().equals(outputName))
@@ -186,5 +193,19 @@ public class FlowDefinitionImpl implements FlowDefinition {
         }
         return null;
     }
-
+    public void AddFlowContinuation(String targetFlow, Map<String,String> targetMapping){
+        flowContinuationMap.put(targetFlow, targetMapping);
+    }
+    public Map<String,String> GetFlowContinuationMap(String flowName){
+        return  flowContinuationMap.get(flowName);
+    }
+    public Set<String> GetFlowContinuationsFlows(){
+        return  flowContinuationMap.keySet();
+    }
+    public void AddInitialValue(String name, Object Value){
+        initialValues.put(name, Value);
+    }
+    public Map<String,Object> GetInitialValues(){
+        return initialValues;
+    }
 }

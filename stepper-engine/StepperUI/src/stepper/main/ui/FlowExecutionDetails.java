@@ -1,6 +1,6 @@
 package stepper.main.ui;
 
-import stepper.flow.execution.FlowFullDetails;
+import stepper.dataStorage.FlowFullDetails;
 
 import java.util.ArrayList;
 import java.util.List;

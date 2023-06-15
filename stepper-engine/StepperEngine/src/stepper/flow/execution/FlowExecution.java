@@ -1,13 +1,15 @@
 package stepper.flow.execution;
 
 import stepper.flow.definition.api.FlowDefinition;
-import stepper.flow.execution.FlowExecutionResult;
+import stepper.flow.execution.context.StepExecutionContext;
 import stepper.step.api.DataCapsuleImpl;
 import stepper.step.api.DataNecessity;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class FlowExecution {
 
@@ -31,6 +33,14 @@ public class FlowExecution {
         summeryLines = new HashMap<>();
         flowFormalOutputs = new HashMap<>();
 
+        setInitialValues();
+
+    }
+    private void setInitialValues(){
+        Map<String,Object> initialValues = flowDefinition.GetInitialValues();
+        for(String name : initialValues.keySet()){
+            addFreeInput(name,initialValues.get(name));
+        }
     }
     public void storeFormalOutput(String userName, String value){
         flowFormalOutputs.put(userName,value);
@@ -102,6 +112,20 @@ public class FlowExecution {
                 return false;
         }
         return true;
+    }
+    public FlowExecution GetFlowForContinuation(String FlowName, List<FlowDefinition> flows, StepExecutionContext context){
+        FlowExecution flowExecution = null;
+        Map<String,String> flowContinuationMap = flowDefinition.GetFlowContinuationMap(FlowName);
+        for(FlowDefinition aFlowDefinition:flows){
+            if(aFlowDefinition.getName().equals(FlowName)){
+                flowExecution = new FlowExecution(UUID.randomUUID().toString(),aFlowDefinition);
+                for(String source : flowContinuationMap.keySet()){
+                    flowExecution.addFreeInput(flowContinuationMap.get(source),context.GetDataValueAsObject(source, "") );
+                }
+                break;
+            }
+        }
+        return flowExecution;
     }
 
 }

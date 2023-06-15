@@ -33,7 +33,7 @@ public class FilesDeleterStep extends AbstractStepDefinition {
         ListData<FileData> listOfFiles = context.getDataValue("FILES_LIST",stepFinaleName, ListData .class);
         ListData<FileData> failedToDelete = new ListData<>();
 
-        context.storeStepLogLine("About to start delete "+listOfFiles.size()+" files");
+        context.storeStepLogLine("About to start delete "+listOfFiles.size()+" files", stepFinaleName);
 
         for(FileData file : listOfFiles){
             if(file.delete()){
@@ -42,7 +42,7 @@ public class FilesDeleterStep extends AbstractStepDefinition {
             }
             else {
                 failedToDelete.add(file);
-                context.storeStepLogLine("Failed to delete file "+file.toString());
+                context.storeStepLogLine("Failed to delete file "+file, stepFinaleName);
                 countFilesFailed++;
             }
         }
@@ -61,11 +61,11 @@ public class FilesDeleterStep extends AbstractStepDefinition {
         }
         else if(countFilesDeleted != 0){
             addSummery("WARNING: "+countFilesFailed+" files failed to delete");
-            context.storeStepLogLine(getSummery());
+            context.storeStepLogLine(getSummery(), stepFinaleName);
             return StepResult.WARNING;
         }
         addSummery("FAILURE: All files failed to delete");
-        context.storeStepLogLine(getSummery());
+        context.storeStepLogLine(getSummery(), stepFinaleName);
         return StepResult.FAILURE;
     }
 

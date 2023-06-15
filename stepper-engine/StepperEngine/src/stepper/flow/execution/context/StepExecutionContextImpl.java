@@ -16,7 +16,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 
     private final Map<String, Object> dataValues;
     private final Map<String, DataDefinition> availableDataValues;
-    private final StringBuilder logLines;
+    private final Map<String, StringBuilder> logLines;
     private final StringBuilder summery;
     private final AliasMapping aliasMapping;
     private Map<Pair<String,String>, Pair<String, String>> customMapping;
@@ -25,7 +25,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 
         dataValues = new HashMap<>();
         availableDataValues = new HashMap<>();
-        logLines = new StringBuilder();
+        logLines = new HashMap<>();
         summery = new StringBuilder();
         aliasMapping = new AliasMapping();
         List<DataCapsuleImpl> allData = flowDefinition.getAllDataCapsules();
@@ -49,8 +49,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 
             return expectedDataType.cast(aValue);
         } else {
-            logLines.append("Error: Cannot assign ").append(expectedDataType).append("to").append(theExpectedDataDefinition.getType().getSimpleName()).append("\n");
-
+            storeStepLogLine(new StringBuilder("Error: Cannot assign ").append(expectedDataType).append("to").append(theExpectedDataDefinition.getType().getSimpleName()), step);
         }
 
         return null;
@@ -66,7 +65,7 @@ public class StepExecutionContextImpl implements StepExecutionContext {
         if (theData.getType().isAssignableFrom(value.getClass())) {
             dataValues.put(dataFinalName, value);
         } else {
-            logLines.append("Error: Cannot assign ").append(theData).append("to").append(value.getClass().getSimpleName()).append("\n");
+            storeStepLogLine(new StringBuilder("Error: Cannot assign ").append(theData).append("to").append(value.getClass().getSimpleName()), step);
             return  true;
         }
 
@@ -103,15 +102,26 @@ public class StepExecutionContextImpl implements StepExecutionContext {
 
         return outputs;
     }
+    private void storeStepLogLine(StringBuilder logLine, String step) {
+        logLines.compute(step, (k, existingValue) -> (existingValue == null) ? logLine : existingValue.append(logLine).append("\n"));
 
+    }
     @Override
-    public void storeStepLogLine(String logLine) {
-        logLines.append(logLine).append("\n");
+    public void storeStepLogLine(String logLine, String step) {
+        logLines.compute(step, (k, existingValue) -> (existingValue == null) ? new StringBuilder(logLine) : existingValue.append(logLine).append("\n"));
+
     }
 
     @Override
-    public String getStepLogLines() {
-        return logLines.toString();
+    public String getStepLogLines( String stepName) {
+        String stepLogLines;
+        try {
+            stepLogLines = logLines.get(stepName).toString();
+        }
+        catch (Exception e){
+            stepLogLines = "";
+        }
+        return stepLogLines;
     }
 
     @Override
@@ -121,6 +131,11 @@ public class StepExecutionContextImpl implements StepExecutionContext {
     @Override
     public void assignCustomMapping(Map<Pair<String,String>, Pair<String, String>> customMapping){
         this.customMapping = customMapping;
+    }
+    @Override
+    public Object GetDataValueAsObject(String dataName,String step ){
+        String dataFinalName = aliasMapping.getDataAliasName(step, dataName);
+        return  dataValues.get(dataFinalName);
     }
 
 }

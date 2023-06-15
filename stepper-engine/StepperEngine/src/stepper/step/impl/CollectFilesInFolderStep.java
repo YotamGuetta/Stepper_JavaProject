@@ -29,14 +29,14 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
         addOutput(new DataDefinitionDeclarationImpl("TOTAL_FOUND",super.name(), DataNecessity.NA, "Total files found", DataDefinitionRegistry.NUMBER));
     }
 
-    private StepResult stepResult(StepResult result, StepExecutionContext context, String msg, String directory) {
+    private StepResult stepResult(StepResult result, StepExecutionContext context, String msg, String directory, String stepFinaleName) {
         if (result == StepResult.FAILURE) {
             addSummery("FAILED: reading the folder " + directory + ", " + msg);
-            context.storeStepLogLine(getSummery());
+            context.storeStepLogLine(getSummery(), stepFinaleName);
 
         } else if (result == StepResult.WARNING) {
             addSummery("WARNING: reading the folder " + directory + ", " + msg);
-            context.storeStepLogLine(getSummery());
+            context.storeStepLogLine(getSummery(), stepFinaleName);
         } else {
             addSummery("SUCCESS: the folder " + directory + ", " + msg);
         }
@@ -50,13 +50,13 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
         int countFiles = 0;
         ListData<FileData> listOfFiles = new ListData<>();
 
-        context.storeStepLogLine("Reading folder " + directory + " content with filter " + filter);
+        context.storeStepLogLine("Reading folder " + directory + " content with filter " + filter, super.name());
 
         Path directoryPath = Paths.get(directory);
         if (!Files.exists(directoryPath))
-            return stepResult(StepResult.FAILURE, context, "the folder does not exist", directory);
+            return stepResult(StepResult.FAILURE, context, "the folder does not exist", directory, stepFinaleName);
         if (!Files.isDirectory(directoryPath))
-            return stepResult(StepResult.FAILURE, context, "the folder is not a directory", directory);
+            return stepResult(StepResult.FAILURE, context, "the folder is not a directory", directory, stepFinaleName);
 
         try (Stream<Path> paths = Files.walk(directoryPath)) {
             List<String> listOfPaths;      // collect all matched to a List
@@ -72,19 +72,19 @@ public class CollectFilesInFolderStep extends AbstractStepDefinition {
                 countFiles++;
             }
 
-            context.storeStepLogLine("Found " + countFiles + " files in folder matching the filter");
+            context.storeStepLogLine("Found " + countFiles + " files in folder matching the filter", stepFinaleName);
 
             // outputs
             context.storeDataValue("FILES_LIST", stepFinaleName, listOfFiles);
             context.storeDataValue("TOTAL_FOUND", stepFinaleName, countFiles);
 
         } catch (Exception e) {
-            return stepResult(StepResult.FAILURE, context, "the folder does not exist", directory);
+            return stepResult(StepResult.FAILURE, context, "the folder does not exist", directory, stepFinaleName);
         }
 
         if(countFiles == 0) {
-            return stepResult(StepResult.WARNING, context, "contains no files with filter: " + filter, directory);
+            return stepResult(StepResult.WARNING, context, "contains no files with filter: " + filter, directory, stepFinaleName);
         }
-        return stepResult(StepResult.SUCCESS, context, "contains "+countFiles+" files", directory);
+        return stepResult(StepResult.SUCCESS, context, "contains "+countFiles+" files", directory, stepFinaleName);
     }
 }

@@ -10,7 +10,6 @@ import stepper.flow.execution.FlowExecution;
 import stepper.step.api.DataNecessity;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 
 public class UserInputController {
     private DataNecessity inputNecessity;
@@ -23,10 +22,29 @@ public class UserInputController {
     private DataDefinitionRegistry thisInputType;
     private  String finalName;
 /////////////////////////////////////////////////////////////////////////
+public boolean isNumber(String str) {
+    try {
+        Double.parseDouble(str);
+        return true;
+    } catch (NumberFormatException e) {
+        return false;
+    }
+}
+    public boolean IsNumericValue(){
+        return thisInputType.equals(DataDefinitionRegistry.NUMBER) || thisInputType.equals(DataDefinitionRegistry.DOUBLE);
+    }
     public boolean addListenerIfMandatory(AtomicInteger filledFieldsCount, Runnable CountTextFilled){
         if(inputNecessity.equals(DataNecessity.MANDATORY)) {
             InputValueTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-                if (newValue.isEmpty() && !oldValue.isEmpty()) {
+                if(IsNumericValue()){
+                    if((newValue.isEmpty() || newValue.equals("-")) && isNumber(oldValue)){
+                        filledFieldsCount.getAndDecrement();
+                    }
+                    else if(isNumber(newValue) && (oldValue.isEmpty() || oldValue.equals("-"))){
+                        filledFieldsCount.getAndIncrement();
+                    }
+                }
+                else if (newValue.isEmpty() && !oldValue.isEmpty()) {
                     filledFieldsCount.getAndDecrement();
                 } else if (!newValue.isEmpty() && oldValue.isEmpty()) {
                     filledFieldsCount.getAndIncrement();
@@ -40,10 +58,10 @@ public class UserInputController {
         return true;
     }
     public void AddListenerToControllerButton(FlowExecution flowExecution){
-        if(!InputValueTextField.getText().isEmpty()){
+        if(!InputValueTextField.getText().isEmpty() ){
             Pair<String ,Object> inputToAdd = GetFreeInputData();
             flowExecution.addFreeInput(inputToAdd.getKey(), inputToAdd.getValue());
-            System.out.println(inputToAdd.getKey()+", Has :"+inputToAdd.getValue());
+            //System.out.println(inputToAdd.getKey()+", Has :"+inputToAdd.getValue());
         }
     }
     public Pair<String ,Object> GetFreeInputData(){
@@ -58,22 +76,35 @@ public class UserInputController {
         return inputData;
     }
 ////////////////////////////////////////////////////////////////////////
-    public void AddInputToScene(String inputName, DataDefinitionRegistry inputType, DataNecessity necessity, String finalName){
+    public void AddInputToScene(String inputName, DataDefinitionRegistry inputType, DataNecessity necessity, String finalName, String startValue){
         inputNecessity = necessity;
         thisInputType = inputType;
         this.finalName = finalName;
         InputNameLabel.setText(inputName);
         InputValueTextField.setPromptText(inputType.getName());
         switch (inputType){
-            case NUMBER: InputValueTextField.setOnKeyPressed(this::NumberTextField);
+            case NUMBER: InputValueTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                    if (newValue != null && !newValue.isEmpty()) {
+                        if (!newValue.matches("-?\\d*")) {
+                            InputValueTextField.setText(oldValue);
+                        }
+                    }
+                });
                 break;
-            case DOUBLE: InputValueTextField.setOnKeyPressed(this::DoubleTextField);
+            case DOUBLE: InputValueTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue != null && !newValue.isEmpty()) {
+                    if (!newValue.matches("-?\\d*(\\.\\d*)?")) {
+                        InputValueTextField.setText(oldValue);
+                    }
+                }
+            });
                 break;
         }
         if(!necessity.equals(DataNecessity.MANDATORY)){
             necessityTextLabel.setStyle("-fx-text-fill: Green");
             necessityTextLabel.setText("("+necessity+")");
         }
+        InputValueTextField.setText(startValue);
     }
 
     private void NumberTextField(KeyEvent keyEvent) {

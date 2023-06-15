@@ -3,6 +3,8 @@ package main;
 
 import Flow.FlowController;
 import FlowExecution.FlowExecutionController;
+import FlowHistory.FlowHistoryController;
+import FlowStatistics.FlowStatisticsController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,10 +21,14 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import stepper.flow.Tasks.CollectFlowsDataTask;
 import stepper.flow.definition.api.*;
+import stepper.flow.execution.FlowExecution;
+import stepper.dataStorage.FlowFullDetails;
+import stepper.dataStorage.StatisticData;
 import stepper.step.api.DataDefinitionDeclaration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class MainController {
@@ -38,6 +44,10 @@ public class MainController {
     private ScrollPane flowExecutionComponent;
     @FXML
     private FlowExecutionController flowExecutionComponentController;
+    @FXML
+    private FlowHistoryController flowHistoryComponentController;
+    @FXML
+    private FlowStatisticsController flowStatisticsComponentController;
     @FXML
     private TextFlow ErrorTextFlow;
     @FXML
@@ -66,12 +76,17 @@ public class MainController {
         LoadFileTextField.textProperty().bind(selectedFileProperty);
         ErrorFileLoadedText.textProperty().bind(fileErrorMessage);
         flowFullDetailsDefaultValue = flowFullDetails;
-
+        flowExecutionComponentController.SetMainController(this);
+        flowHistoryComponentController.setFlowRerunAction(this::rerunFlow);
         //FlowDefinition flowDefinition = new FlowDefinitionImpl("dada", "big dada");
         //loadSingleFXML(flowDefinition);
         //loadSingleFXML(new FlowDefinitionImpl("papa", "big papa"));
     }
-
+    private void rerunFlow(FlowExecution flowExecution){
+        flowExecutionComponentController.rerunFlow(flowExecution);
+        tabSelected = 1;
+        flowTabPane.getSelectionModel().select(tabSelected);
+    }
     public void SetPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
@@ -145,25 +160,29 @@ public class MainController {
         int row = -1;
         clearFlowFullData();
         for (StepUsageDeclaration step : flowDefinition.getFlowSteps()) {
-            //StepDefinition stepDefinition = StepDefinitionRegistry.FILES_RENAMER_STEP.getStepDefinition();
-            //StepUsageDeclaration step = new StepUsageDeclarationImpl(stepDefinition);
+            flowFullDetails.add(new Label("________________________________"), 0, ++row);
+            flowFullDetails.add(new Label("_______________________________"), 1, row);
+
             flowFullDetails.add(new Label("Step Name"), 0, ++row);
             flowFullDetails.add(new Label(step.getFinalStepName() + ":"), 1, row);
+
             flowFullDetails.add(new Label("Step Inputs:"), 0, ++row);
             for (DataDefinitionDeclaration input : step.getStepDefinition().inputs()) {
-                flowFullDetails.add(new Label(input.getName() + ","), 0, ++row);
+                flowFullDetails.add(new Label(selectedFlow.GetDataDefinitionAfterAliasing(input.getName(),step.getFinalStepName()) + ","), 0, ++row);
                 flowFullDetails.add(new Label(input.necessity().name()), 1, row);
             }
             flowFullDetails.add(new Label("Step Outputs:"), 0, ++row);
             for (DataDefinitionDeclaration output : step.getStepDefinition().outputs()) {
-                flowFullDetails.add(new Label(output.getName() + ","), 0, ++row);
+                flowFullDetails.add(new Label(selectedFlow.GetDataDefinitionAfterAliasing(output.getName(),step.getFinalStepName()) + ","), 0, ++row);
             }
+
         }
         Button startFlowButton = new Button();
         startFlowButton.setText("Start Flow");
         startFlowButton.onMouseClickedProperty().set(this::StartFlow);
         startFlowButton.prefWidth(90);
         startFlowButton.prefHeight(23);
+
         flowFullDetails.add(startFlowButton, 1, ++row);
         flowFullDetails.add(new Label(), 0, ++row);
 
@@ -173,6 +192,14 @@ public class MainController {
             flowExecutionComponentController.StartFlowPreparations(selectedFlow);
             tabSelected = 1;
             flowTabPane.getSelectionModel().select(tabSelected);
+        }
+
+        public void AddFlowToHistory(FlowFullDetails flowFullDetails){
+
+            flowHistoryComponentController.AddNewFlowToHistory(flowFullDetails);
+        }
+        public void UpdateStatistics(List<StatisticData> flows, List<StatisticData> steps){
+            flowStatisticsComponentController.UpdateStatistics(flows, steps);
         }
 
 }
