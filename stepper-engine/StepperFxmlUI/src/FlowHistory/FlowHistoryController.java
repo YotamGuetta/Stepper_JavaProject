@@ -79,7 +79,6 @@ public class FlowHistoryController{
     }
     @FXML
     void FlowHistoryFilterSelected(ContextMenuEvent event) {
-        System.out.println("switched");
     }
     private void AddFlowBasicDetails(FlowFullDetails flowFullDetails){
         try {
@@ -101,7 +100,6 @@ public class FlowHistoryController{
         }
     }
     public void OnFlowBasicDetailsClicked(String flowUuid){
-        System.out.println("clicked");
         flowStepsContainerComponentController.clearStepsData();
         currentSelectedFlow = flowHistoryData.get(flowUuid).getKey();
         flowStepsContainerComponentController.UpdateFlowExecutionHeader(

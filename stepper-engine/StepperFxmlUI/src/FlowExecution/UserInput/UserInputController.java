@@ -69,7 +69,6 @@ public class UserInputController {
         if(!InputValueTextField.getText().isEmpty() ){
             Pair<String ,Object> inputToAdd = GetFreeInputData();
             flowExecution.addFreeInput(inputToAdd.getKey(), inputToAdd.getValue());
-            //System.out.println(inputToAdd.getKey()+", Has :"+inputToAdd.getValue());
         }
     }
     public Pair<String ,Object> GetFreeInputData(){

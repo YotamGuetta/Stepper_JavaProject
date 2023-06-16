@@ -1,0 +1,10 @@
+.table-view{
+    -fx-background-color: #a29b9b;
+}
+.table-view:row-selection .column-header-background{
+    -fx-background-color: #a29b9b;
+}
+.table-view:row-selection .column-header-background .nested-column-header .table-column{
+    -fx-background-color: linear-gradient(to bottom, #8a8a8a, #605f5f);
+
+}

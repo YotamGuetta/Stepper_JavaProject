@@ -210,7 +210,6 @@ public class MainController {
         }
 
     private  void CssSkinSelectedChanged(){
-        System.out.println("Changing");
         String choice = CssSkinChoiceBox.getValue();
         primaryStage.getScene().getStylesheets().clear(); // Clear existing stylesheets
         if(choice.equals(cssSkinsAvailable.get(1))) {

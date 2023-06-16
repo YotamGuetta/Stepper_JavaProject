@@ -173,10 +173,8 @@ public class FlowExecutionController {
         mainController.AddFlowToHistory(flowFullDetails);
         Pair<List<StatisticData>,List<StatisticData>> statistics = flowFullDetails.GetStatistics();
         mainController.UpdateStatistics(statistics.getKey(), statistics.getValue());
-        System.out.println("got flow details");
     }
     private void setFinish(){
-        System.out.println("task Finished");
 
     }
     @FXML

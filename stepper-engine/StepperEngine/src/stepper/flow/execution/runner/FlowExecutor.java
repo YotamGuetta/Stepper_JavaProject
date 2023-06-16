@@ -100,7 +100,7 @@ public class FlowExecutor extends Task<Boolean> {
                     throw new Exception("Failed to get output");
             }
         } catch (Exception e) {
-            System.out.println("Failed to get outputs");
+
         }
         long endTime = System.currentTimeMillis();
         flowExecution.setFlowRunTime(endTime - startTime);
@@ -201,7 +201,7 @@ public class FlowExecutor extends Task<Boolean> {
                     throw new Exception("Failed to get output");
             }
         } catch (Exception e) {
-            System.out.println("Failed to get outputs");
+
         }
         long endTime = System.currentTimeMillis();
         flowExecution.setFlowRunTime(endTime - startTime);
