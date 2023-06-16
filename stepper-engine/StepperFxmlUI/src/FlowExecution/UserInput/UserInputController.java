@@ -1,14 +1,19 @@
 package FlowExecution.UserInput;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.util.Pair;
 import stepper.dd.impl.DataDefinitionRegistry;
+import stepper.dd.impl.enumerator.EnumeratorData;
 import stepper.flow.execution.FlowExecution;
 import stepper.step.api.DataNecessity;
 
+import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class UserInputController {
@@ -19,10 +24,13 @@ public class UserInputController {
     private  Label necessityTextLabel;
     @FXML
     private TextField InputValueTextField;
+    @FXML
+    private HBox inputContinerHBox;
+    private ChoiceBox<String> inputValueChoiceBox;
     private DataDefinitionRegistry thisInputType;
     private  String finalName;
 /////////////////////////////////////////////////////////////////////////
-public boolean isNumber(String str) {
+    public boolean isNumber(String str) {
     try {
         Double.parseDouble(str);
         return true;
@@ -71,6 +79,10 @@ public boolean isNumber(String str) {
                 break;
             case DOUBLE: inputData = new Pair<>(finalName,Double.parseDouble(InputValueTextField.getText()));
                 break;
+            case  ENUMERATOR:EnumeratorData enumeratorData = new EnumeratorData();
+                enumeratorData.setCurrentValue(inputValueChoiceBox.getValue());
+                inputData = new Pair<>(finalName, enumeratorData);
+                break;
             default: inputData = new Pair<>(finalName,InputValueTextField.getText());
         }
         return inputData;
@@ -98,6 +110,16 @@ public boolean isNumber(String str) {
                     }
                 }
             });
+            case ENUMERATOR:
+                ObservableList<String> inputValueChoices = FXCollections.observableArrayList();
+                inputValueChoices.addAll(Arrays.asList(EnumeratorData.values));
+                inputValueChoiceBox = new ChoiceBox<>();
+                inputValueChoiceBox.setItems(inputValueChoices);
+                inputContinerHBox.getChildren().remove(InputValueTextField);
+                inputContinerHBox.getChildren().add(inputValueChoiceBox);
+                if(inputValueChoices.contains(startValue)){
+                    inputValueChoiceBox.setValue(startValue);
+                }
                 break;
         }
         if(!necessity.equals(DataNecessity.MANDATORY)){
@@ -107,29 +129,5 @@ public boolean isNumber(String str) {
         InputValueTextField.setText(startValue);
     }
 
-    private void NumberTextField(KeyEvent keyEvent) {
-        checkIfValidNumber(keyEvent, "-");
-    }
-    private void checkIfValidNumber (KeyEvent keyEvent, String validSigns){
-        String input = keyEvent.getCharacter();
-        try {
-            Integer.parseInt(input);
-            keyEvent.consume();
-        }
-        catch (Exception e){
-            if(validSigns.contains(input)){
-                keyEvent.consume();
-            }
-        }
-    }
-    private void DoubleTextField(KeyEvent keyEvent){
-        checkIfValidNumber(keyEvent, "-.");
-    }
-    public void registerTextFieldListener(){
-
-    }
-    public boolean HasInputValue(){
-        return !InputValueTextField.getText().isEmpty();
-    }
 
 }

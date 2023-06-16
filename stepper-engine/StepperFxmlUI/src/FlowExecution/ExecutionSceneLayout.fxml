@@ -45,16 +45,12 @@
                <padding>
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </padding>
-               <stylesheets>
-                  <URL value="@../main/MainStyles.css" />
-                  <URL value="@ExecutionStyle.css" />
-               </stylesheets>
                <center>
                   <VBox alignment="BOTTOM_RIGHT" BorderPane.alignment="TOP_CENTER">
                      <children>
                         <VBox VBox.vgrow="ALWAYS">
                            <children>
-                              <GridPane fx:id="flowDetailsGridPane" hgap="2.0" stylesheets="@../main/MainStyles.css" vgap="2.0" VBox.vgrow="ALWAYS">
+                              <GridPane fx:id="flowDetailsGridPane" hgap="2.0" vgap="2.0" VBox.vgrow="ALWAYS">
                                 <columnConstraints>
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="179.0" minWidth="10.0" prefWidth="147.0" />
                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="221.0" minWidth="10.0" prefWidth="221.0" />
@@ -66,11 +62,12 @@
                                 </rowConstraints>
                               </GridPane>
                            </children></VBox>
-                        <VBox alignment="BOTTOM_RIGHT" VBox.vgrow="NEVER">
+                        <HBox nodeOrientation="RIGHT_TO_LEFT" spacing="20.0">
                            <children>
-                              <Button mnemonicParsing="false" text="continue" />
+                              <Button mnemonicParsing="false" onAction="#FlowContinuationButtonClicked" text="continue" />
+                              <ChoiceBox fx:id="flowContinuationChoiceBox" prefWidth="150.0" />
                            </children>
-                        </VBox>
+                        </HBox>
                      </children>
                      <opaqueInsets>
                         <Insets />

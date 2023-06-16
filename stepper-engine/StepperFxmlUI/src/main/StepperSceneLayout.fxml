@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<VBox id="project-background" stylesheets="@MainStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.MainController">
+<VBox id="project-background" fx:id="mainStepperContainer" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.MainController">
    <children>
     <AnchorPane maxHeight="150.0" minHeight="50.0" minWidth="100.0" prefHeight="77.0">
          <children>
@@ -43,16 +43,22 @@
                                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <ImageView fitHeight="30.0" fitWidth="102.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                    <ImageView id="stepper-title" fitHeight="30.0" fitWidth="102.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
                                        <image>
                                           <Image url="@Resources/StepperTitleGIF.gif" />
                                        </image>
                                     </ImageView>
                                     <TextFlow fx:id="ErrorTextFlow" prefHeight="111.0" prefWidth="198.0" textAlignment="CENTER">
                                        <children>
-                                          <Text fx:id="ErrorFileLoadedText" fill="RED" lineSpacing="1.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+                                          <Text fx:id="ErrorFileLoadedText" fill="RED" lineSpacing="1.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="ErrorText" />
                                        </children>
                                     </TextFlow>
+                                    <HBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="2">
+                                       <children>
+                                          <ChoiceBox fx:id="CssSkinChoiceBox" prefWidth="150.0" GridPane.columnIndex="2" />
+                                          <ImageView id="stepperIcon" fitHeight="53.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                                       </children>
+                                    </HBox>
                                  </children>
                                  <padding>
                                     <Insets bottom="5.0" top="5.0" />

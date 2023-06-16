@@ -1,5 +1,7 @@
 package stepper.flow.execution;
 
+import stepper.dataStorage.FlowDefinitionsStorage;
+import stepper.dataStorage.FlowFullDetails;
 import stepper.flow.definition.api.FlowDefinition;
 import stepper.flow.execution.context.StepExecutionContext;
 import stepper.step.api.DataCapsuleImpl;
@@ -113,17 +115,14 @@ public class FlowExecution {
         }
         return true;
     }
-    public FlowExecution GetFlowForContinuation(String FlowName, List<FlowDefinition> flows, StepExecutionContext context){
+    public FlowExecution GetFlowForContinuation(String FlowName, FlowDefinitionsStorage flows, FlowFullDetails flowFullDetails) {
+        StepExecutionContext context = flowFullDetails.GetStepExecutionContext();
         FlowExecution flowExecution = null;
-        Map<String,String> flowContinuationMap = flowDefinition.GetFlowContinuationMap(FlowName);
-        for(FlowDefinition aFlowDefinition:flows){
-            if(aFlowDefinition.getName().equals(FlowName)){
-                flowExecution = new FlowExecution(UUID.randomUUID().toString(),aFlowDefinition);
-                for(String source : flowContinuationMap.keySet()){
-                    flowExecution.addFreeInput(flowContinuationMap.get(source),context.GetDataValueAsObject(source, "") );
-                }
-                break;
-            }
+        Map<String, String> flowContinuationMap = flowDefinition.GetFlowContinuationMap(FlowName);
+
+        flowExecution = new FlowExecution(UUID.randomUUID().toString(), flows.GetFlowDefinition(FlowName));
+        for (String source : flowContinuationMap.keySet()) {
+            flowExecution.addFreeInput(flowContinuationMap.get(source), context.GetDataValueAsObject( source,"" ));
         }
         return flowExecution;
     }

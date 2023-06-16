@@ -2,7 +2,7 @@ package stepper.flow.definition.api;
 
 import stepper.flow.definition.api.FlowDefinitionImpl;
 import stepper.flow.definition.api.StepUsageDeclarationImpl;
-import stepper.schema.*;
+import stepper.schema.v2.*;
 import stepper.step.StepDefinitionRegistry;
 import stepper.step.api.StepDefinition;
 
@@ -14,8 +14,12 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import java.lang.Object;
+import java.util.concurrent.*;
+
 public class ReadFlowFromFile {
-    private final static String JAXB_XML_GAME_PACKAGE_NAME = "stepper.schema";
+    public ExecutorService threadExecutor;
+    private final static String JAXB_XML_GAME_PACKAGE_NAME = "stepper.schema.v2";
     private final Set<String> flowsNames;
     public ReadFlowFromFile(){
         flowsNames = new HashSet<>();
@@ -49,7 +53,16 @@ public class ReadFlowFromFile {
 
         // Get File as schema
         InputStream inputStream = Files.newInputStream(Paths.get(xmlFile));
+
         STStepper stepper = deserializeFrom(inputStream);
+        int threadPoolSize;
+
+            threadPoolSize = stepper.getSTThreadPool();
+        if(threadPoolSize <= 0){
+            throw new InvalidPropertiesFormatException("The file does not contain thread count");
+        }
+        threadExecutor = Executors.newFixedThreadPool(threadPoolSize);
+
         List<STFlow> flowsSchema = stepper.getSTFlows().getSTFlow();
 
         Map<String, StepDefinition> stepToDefinition = stepNameToDefinitionMap();
@@ -112,7 +125,28 @@ public class ReadFlowFromFile {
                     flows.get(flowIndex).addCustomMapping(sourceStep, sourceData, targetStep, targetData);
                 }
             }
-
+            if(flowSchema.getSTContinuations() != null) {
+                List<STContinuation> continuations = flowSchema.getSTContinuations().getSTContinuation();
+                for (STContinuation continuation : continuations) {
+                    String targetFlow = continuation.getTargetFlow();
+                    Map<String,String> flowTargetMap = new HashMap<>();
+                    List<STContinuationMapping> continuationMapping = continuation.getSTContinuationMapping();
+                    for(STContinuationMapping continuationMap : continuationMapping){
+                        String sourceData = continuationMap.getSourceData();
+                        String targetData = continuationMap.getTargetData();
+                        flowTargetMap.put(sourceData, targetData);
+                    }
+                    flows.get(flowIndex).AddFlowContinuation(targetFlow, flowTargetMap);
+                }
+            }
+            if(flowSchema.getSTInitialInputValues() != null) {
+                List<STInitialInputValue> initialValues = flowSchema.getSTInitialInputValues().getSTInitialInputValue();
+                for (STInitialInputValue initialValue : initialValues) {
+                    String name = initialValue.getInputName();
+                    String value = initialValue.getInitialValue();
+                    flows.get(flowIndex).AddInitialValue(name,value);
+                }
+            }
             flows.get(flowIndex).validateFlowStructure();
 
             flowIndex++;

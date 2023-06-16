@@ -17,7 +17,8 @@ public enum StepDefinitionRegistry implements StepDefinition {
     CSV_EXPORTER(new CSVExporterStep()),
     PROPERTIES_EXPORTER(new PropertiesExporterStep()),
     FILE_DUMPER(new FileDumperStep()),
-    ZIPPER(new ZipperStep());
+    ZIPPER(new ZipperStep()),
+    COMMANDLINE(new CommandLineStep());
 
     StepDefinitionRegistry(StepDefinition stepDefinition) {
         this.stepDefinition = stepDefinition;

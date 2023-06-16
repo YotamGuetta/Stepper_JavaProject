@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import java.net.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
@@ -13,52 +14,84 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox spacing="30.0" styleClass="background-part" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FlowStatistics.FlowStatisticsController">
-   <padding>
-      <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
-   </padding>
+
+<VBox styleClass="background-part" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FlowStatistics.FlowStatisticsController">
    <children>
-      <VBox alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="ALWAYS">
+      <HBox prefHeight="200.0" spacing="20.0" stylesheets="@StatisticsStyles.css" VBox.vgrow="ALWAYS">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
          <children>
-            <Label text="Flows" />
-            <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+            <VBox alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label text="Flows" />
+                  <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+                     <content>
+                        <TableView fx:id="flowsTableView" minWidth="400.0">
+                          <columns>
+                            <TableColumn fx:id="flowsColumn" minWidth="200.0" prefWidth="200.0" text="Flows" />
+                            <TableColumn fx:id="flowUsersColumn" prefWidth="40.0" text="Uses" />
+                              <TableColumn fx:id="flowsAverageTimeColumn" prefWidth="100.0" text="Average Time" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+            <VBox alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label text="Steps" />
+                  <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
+                     <content>
+                        <TableView fx:id="stepsTableView" minWidth="400.0">
+                           <columns>
+                              <TableColumn fx:id="stepsColumn" minWidth="200.0" prefWidth="200.0" text="Steps" />
+                              <TableColumn fx:id="stepsUsersColumn" prefWidth="50.0" text="Uses" />
+                              <TableColumn fx:id="stepsAverageTimeColumn" prefWidth="100.0" text="Average Time" />
+                           </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+      <HBox prefHeight="200.0" spacing="20.0" stylesheets="@StatisticsStyles.css" VBox.vgrow="ALWAYS">
+         <children>
+            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" prefViewportHeight="150.0" prefViewportWidth="200.0" vbarPolicy="ALWAYS" HBox.hgrow="ALWAYS">
                <content>
-                  <TableView fx:id="flowsTableView" minWidth="400.0">
-                    <columns>
-                      <TableColumn fx:id="flowsColumn" minWidth="200.0" prefWidth="200.0" text="Flows" />
-                      <TableColumn fx:id="flowUsersColumn" prefWidth="40.0" text="Uses" />
-                        <TableColumn fx:id="flowsAverageTimeColumn" prefWidth="100.0" text="Average Time" />
-                    </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                  </TableView>
+                  <LineChart fx:id="flowLineChart" minWidth="400.0" title="Flows">
+                    <xAxis>
+                      <CategoryAxis fx:id="flowUsersAxis" label="uses" side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis fx:id="flowRunTimeAxis" label="run time" side="LEFT" />
+                    </yAxis>
+                  </LineChart>
+               </content>
+            </ScrollPane>
+            <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" prefViewportHeight="150.0" prefViewportWidth="254.0" vbarPolicy="ALWAYS" HBox.hgrow="ALWAYS">
+               <content>
+                  <LineChart fx:id="stepsLineChart" minWidth="400.0" title="Steps">
+                    <xAxis>
+                      <CategoryAxis fx:id="stepUsersAxis" label="uses" side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis fx:id="stepRunTimeAxis" label="run time" side="LEFT" />
+                    </yAxis>
+                  </LineChart>
                </content>
             </ScrollPane>
          </children>
-      </VBox>
-      <VBox alignment="TOP_CENTER" spacing="5.0" HBox.hgrow="ALWAYS">
-         <children>
-            <Label text="Steps" />
-            <ScrollPane fitToHeight="true" fitToWidth="true" VBox.vgrow="ALWAYS">
-               <content>
-                  <TableView fx:id="stepsTableView" minWidth="250.0" prefHeight="238.0" prefWidth="250.0">
-                     <columns>
-                        <TableColumn fx:id="stepsColumn" minWidth="200.0" prefWidth="200.0" text="Steps" />
-                        <TableColumn fx:id="stepsUsersColumn" prefWidth="50.0" text="Uses" />
-                        <TableColumn fx:id="stepsAverageTimeColumn" prefWidth="100.0" text="Average Time" />
-                     </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                  </TableView>
-               </content>
-            </ScrollPane>
-         </children>
-      </VBox>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+      </HBox>
    </children>
-   <stylesheets>
-      <URL value="@../main/MainStyles.css" />
-      <URL value="@StatisticsStyles.css" />
-   </stylesheets>
-</HBox>
+</VBox>

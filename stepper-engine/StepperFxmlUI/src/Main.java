@@ -1,7 +1,5 @@
 
 // MainApp.java
-import FlowExecution.FlowExecutionController;
-import javafx.scene.text.Font;
 import main.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,12 +7,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Objects;
+
 public class Main extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Font dfont = Font.loadFont(getClass().getResourceAsStream("main/Resources/diablo-font.ttf"), 12);
-
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("main/StepperSceneLayout.fxml"));
 
@@ -27,7 +25,7 @@ public class Main extends Application{
         // Add any additional initialization for the controller
 
         Scene scene = new Scene(root);
-        scene.getStylesheets().add(getClass().getResource("main/MainStyles.css").toExternalForm());
+        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("main/MainStylesDiablo.css")).toExternalForm());
 
         primaryStage.setScene(scene);
         primaryStage.show();

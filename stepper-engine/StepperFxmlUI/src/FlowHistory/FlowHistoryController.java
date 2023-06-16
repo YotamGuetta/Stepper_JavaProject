@@ -21,6 +21,7 @@ import stepper.dataStorage.FlowFullDetails;
 import stepper.dataStorage.stepDetails;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -103,6 +104,9 @@ public class FlowHistoryController{
         System.out.println("clicked");
         flowStepsContainerComponentController.clearStepsData();
         currentSelectedFlow = flowHistoryData.get(flowUuid).getKey();
+        flowStepsContainerComponentController.UpdateFlowExecutionHeader(
+                Arrays.asList(currentSelectedFlow.getFlowName(),currentSelectedFlow.getStartTime(), currentSelectedFlow.getFlowResult()));
+
         int count =0;
         for(stepDetails fullStepDetails: currentSelectedFlow.getSteps().values()) {
                 flowStepsContainerComponentController.loadSingleStepFXML(new Pair<>(fullStepDetails.getName(), fullStepDetails.getResult()));

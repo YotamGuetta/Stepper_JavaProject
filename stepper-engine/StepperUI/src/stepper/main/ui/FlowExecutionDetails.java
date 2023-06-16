@@ -43,7 +43,7 @@ public class FlowExecutionDetails {
                 continue;
             }
             FlowFullDetails choice = details.get(input-1);
-            System.out.println(choice.getHistoryData());
+            //System.out.println(choice.getHistoryData());
             System.out.println();
         }
     }

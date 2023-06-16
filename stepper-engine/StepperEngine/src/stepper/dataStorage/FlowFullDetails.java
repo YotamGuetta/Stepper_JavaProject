@@ -19,6 +19,9 @@ public class FlowFullDetails {
     long flowRunTime;
     FlowExecutionResult flowResult;
     private Map<String, stepDetails>  listOfStepsDetails;
+    public StepExecutionContext GetStepExecutionContext(){
+        return context;
+    }
     public FlowExecution getFlowExecution(){
         return flowExecution;
     }

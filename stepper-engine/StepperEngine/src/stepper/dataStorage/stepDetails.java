@@ -30,7 +30,7 @@ public class stepDetails {
         inputs = new HashMap<>();
         List<DataDefinitionDeclaration> stepInputs = step.getStepDefinition().inputs();
         for (DataDefinitionDeclaration input : stepInputs) {
-            Object value = context.GetDataValueAsObject(step.getFinalStepName(), input.getName());
+            Object value = context.GetDataValueAsObject(input.getName(), step.getFinalStepName());
 
             inputs.put(flowExecution.getFlowDefinition()
                             .GetDataDefinitionAfterAliasing(input.getName(),
@@ -41,7 +41,7 @@ public class stepDetails {
         List<DataDefinitionDeclaration> stepOutputs = step.getStepDefinition().outputs();
 
         for (DataDefinitionDeclaration output : stepOutputs) {
-            Object value = context.GetDataValueAsObject(step.getFinalStepName(), output.getName());
+            Object value = context.GetDataValueAsObject( output.getName(), step.getFinalStepName());
 
             outputs.put(flowExecution.getFlowDefinition()
                             .GetDataDefinitionAfterAliasing(output.getName(),

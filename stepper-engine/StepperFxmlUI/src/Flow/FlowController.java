@@ -1,13 +1,9 @@
 package Flow;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.FloatProperty;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
 import javafx.scene.effect.Effect;
 import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseEvent;
@@ -15,6 +11,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import main.MainController;
 import stepper.flow.definition.api.FlowDefinition;
+
+import java.util.Set;
 
 public class FlowController {
     private  FlowDefinition flowDefinition;
@@ -46,15 +44,19 @@ public class FlowController {
     }
     public void LoadNewFlow(FlowDefinition flowDefinition){
         this.flowDefinition = flowDefinition;
-        SetFlowData(flowDefinition.getName(), flowDefinition.getDescription(), flowDefinition.getFlowSteps().size(),flowDefinition.getFlowFreeInputs().size(), "");
+        SetFlowData(flowDefinition.getName(), flowDefinition.getDescription(), flowDefinition.getFlowSteps().size(),flowDefinition.getFlowFreeInputs().size(), flowDefinition.GetFlowContinuationsFlows());
 
     }
-    private void SetFlowData(String flowName, String flowDescription, Integer StepCount, Integer inputCount, String continuation){
+    private void SetFlowData(String flowName, String flowDescription, Integer StepCount, Integer inputCount, Set<String> continuation){
         flowNameLabel.setText(flowName);
         descriptionLabel.setText(flowDescription);
         stepCountLabel.setText(StepCount.toString());
         inputsCountLabel.setText(inputCount.toString());
-        ContinuationLabel.setText(continuation);
+        StringBuilder continuationsList = new StringBuilder();
+        for(String continuationFlowName : continuation){
+            continuationsList.append(continuationFlowName).append("\n");
+        }
+        ContinuationLabel.setText(continuationsList.toString());
     }
     public  void setMainController(MainController mainController){
 

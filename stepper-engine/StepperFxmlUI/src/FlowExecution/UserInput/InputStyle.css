@@ -25,3 +25,7 @@
     -fx-border-width: 6;
     -fx-border-color: linear-gradient(to left, #524b3b, #80735a);
 }
+#value-text{
+    -fx-font-family: Lucida Sans Typewriter;
+    -fx-font-weight: BOLD;
+}

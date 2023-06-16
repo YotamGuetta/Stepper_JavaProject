@@ -48,7 +48,7 @@ public class StepperUI {
         }
     }
     public void RunStepper() {
-        FlowExecutor flowExecutor = new FlowExecutor();
+        FlowExecutor flowExecutor; //= new FlowExecutor();
         ReadFlowFromFile readFlowFromFile = new ReadFlowFromFile();
         Scanner scanner = new Scanner(System.in);
         Statistics statistics = new Statistics();
@@ -94,7 +94,7 @@ public class StepperUI {
                     FlowExecutionUI flowExecutionUI = new FlowExecutionUI(flowExecution, scanner, statistics, details);
 
                     if (flowExecutionUI.GetFreeInputs()) {
-                        details.addDetails(flowExecutor.executeFlow(flowExecution));
+                       // details.addDetails(flowExecutor.executeFlow(flowExecution));
                         printFlowExecutionResult(flowExecution);
                         statistics.addToStatistics(flowExecution);
                         //flowExecution.clearFlowData();
