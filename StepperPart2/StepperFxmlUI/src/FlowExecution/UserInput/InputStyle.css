@@ -1,0 +1,31 @@
+@Font-face {
+    font-family: dfont;
+    src: url("Resources/diablo-font.ttf");
+}
+#necessityText{
+    -fx-text-fill: Red;
+    -fx-font-size: 8px;
+}
+.root{
+    -fx-border-color: #c4bdbd;
+    -fx-font-family: Diablo;
+}
+#inputNameLabel{
+    -fx-text-fill: linear-gradient(to bottom, yellow, white);
+    -fx-font-size: 10px;
+
+}
+#InputBackground .text-field{
+    -fx-text-fill: linear-gradient(to bottom, white, red);
+    -fx-background-color: #6e644f;
+
+}
+#InputBackground{
+    -fx-background-image: url('Resources/FlowInputBackground.jpg');
+    -fx-border-width: 6;
+    -fx-border-color: linear-gradient(to left, #524b3b, #80735a);
+}
+#value-text{
+    -fx-font-family: Lucida Sans Typewriter;
+    -fx-font-weight: BOLD;
+}
