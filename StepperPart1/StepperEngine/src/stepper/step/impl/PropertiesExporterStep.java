@@ -25,7 +25,7 @@ public class PropertiesExporterStep extends AbstractStepDefinition {
     private String convertStringListToProperties( List<String> keys, List<String> values){
         StringBuilder result = new StringBuilder();
         for(int i=0; i<keys.size(); i++){
-            result.append("row-"+i+".").append(keys.get(i)).append("=").append(values.get(i)).append("\n");
+            result.append("row-").append(i).append(".").append(keys.get(i)).append("=").append(values.get(i)).append("\n");
         }
 
         return result.toString();

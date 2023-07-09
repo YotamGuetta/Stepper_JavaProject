@@ -1,0 +1,24 @@
+.root{
+    -fx-border-color: #c4bdbd;
+    -fx-font-family: Diablo;
+
+}
+.containerBox{
+    -fx-border-color: Gray;
+    -fx-border-width: 3px;
+}
+.container{
+    -fx-background-color: linear-gradient(to bottom, #505048, #362d2d);
+    -fx-opacity: 0.8;
+}
+.container .label{
+    -fx-font-size: 10px;
+    -fx-fill: linear-gradient(to bottom, yellow, red);
+    -fx-text-fill: linear-gradient(to bottom, yellow, red);
+}
+.container:hover{
+     -fx-opacity: 1;
+ }
+.container:selected{
+    -fx-opacity: 1;
+}

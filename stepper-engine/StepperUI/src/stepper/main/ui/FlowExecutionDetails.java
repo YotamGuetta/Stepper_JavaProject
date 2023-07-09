@@ -1,6 +1,6 @@
 package stepper.main.ui;
 
-import stepper.flow.execution.FlowFullDetails;
+import stepper.dataStorage.FlowFullDetails;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +43,7 @@ public class FlowExecutionDetails {
                 continue;
             }
             FlowFullDetails choice = details.get(input-1);
-            System.out.println(choice.getHistoryData());
+            //System.out.println(choice.getHistoryData());
             System.out.println();
         }
     }

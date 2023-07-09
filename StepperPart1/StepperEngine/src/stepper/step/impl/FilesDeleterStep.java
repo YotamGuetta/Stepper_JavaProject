@@ -42,7 +42,7 @@ public class FilesDeleterStep extends AbstractStepDefinition {
             }
             else {
                 failedToDelete.add(file);
-                context.storeStepLogLine("Failed to delete file "+file.toString());
+                context.storeStepLogLine("Failed to delete file "+file);
                 countFilesFailed++;
             }
         }
