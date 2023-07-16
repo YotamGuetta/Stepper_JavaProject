@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<VBox id="project-background" fx:id="mainStepperContainer" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="AdministratorUI.main.MainAdminController">
+   <children>
+    <AnchorPane maxHeight="150.0" minHeight="50.0" minWidth="100.0" prefHeight="77.0">
+         <children>
+            <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <content>
+                <AnchorPane minHeight="50.0" minWidth="200.0" prefHeight="100.0" prefWidth="596.0">
+                     <children>
+                        <VBox id="top-half" alignment="TOP_CENTER" styleClass="background-part" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <GridPane alignment="CENTER" VBox.vgrow="ALWAYS">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <ImageView id="stepper-title" fitHeight="30.0" fitWidth="102.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                       <image>
+                                          <Image url="@../../main/Resources/StepperTitleGIF.gif" />
+                                       </image></ImageView>
+                                    <TextFlow fx:id="ErrorTextFlow" prefHeight="111.0" prefWidth="198.0" textAlignment="CENTER">
+                                       <children>
+                                          <Text fx:id="ErrorFileLoadedText" fill="RED" lineSpacing="1.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="ErrorText" />
+                                       </children>
+                                    </TextFlow>
+                                    <HBox alignment="CENTER" spacing="5.0" GridPane.columnIndex="2">
+                                       <children>
+                                          <ChoiceBox fx:id="CssSkinChoiceBox" prefWidth="150.0" GridPane.columnIndex="2" />
+                                          <ImageView id="stepperIcon" fitHeight="53.0" fitWidth="70.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="5.0" top="5.0" />
+                                 </padding>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </GridPane>
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+                                 <children>
+                                    <Button fx:id="LoadFileButton" minHeight="16.0" minWidth="-Infinity" mnemonicParsing="false" onAction="#OpenFileButtonAction" prefHeight="23.0" prefWidth="90.0" text="Load File" />
+                                    <TextField fx:id="LoadFileTextField" minHeight="25.0" minWidth="50.0" prefHeight="25.0" prefWidth="400.0" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="20.0" />
+                                 </padding>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
+         </children>
+      </AnchorPane>
+    <AnchorPane prefHeight="300.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+         <children>
+            <TabPane fx:id="flowTabPane" centerShape="false" rotateGraphic="true" tabClosingPolicy="UNAVAILABLE" tabMaxWidth="1.7976931324862315E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <tabs>
+                <Tab text="User Management">
+                   <content>
+                       <fx:include fx:id="usersComponent" source="../../ItemsContainer/ItemsSceneLayout.fxml" />
+                   </content>
+                  </Tab>
+                <Tab text="Roles Management">
+                   <content>
+                       <fx:include fx:id="rolesComponent" source="../../ItemsContainer/ItemsSceneLayout.fxml" />
+                   </content>
+                </Tab>
+                  <Tab text="Executions History">
+                     <content>
+                     <fx:include fx:id="flowHistoryComponent" source="../../FlowHistory/FlowHistorySceneLayout.fxml" />
+                     </content>
+                  </Tab>
+                  <Tab text="Statistics">
+                     <content>
+                         <fx:include fx:id="flowStatisticsComponent" source="../FlowStatistics/FlowStatisticsSceneLayout.fxml" />
+                     </content>
+                  </Tab>
+              </tabs>
+            </TabPane>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>

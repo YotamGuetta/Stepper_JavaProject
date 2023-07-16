@@ -1,0 +1,132 @@
+.root{
+    -fx-border-color: #c4bdbd;
+    -fx-font-family: Lucida Sans Typewriter;
+    -fx-font-weight: BOLD;
+}
+#stepper-title{
+    -fx-image: url('Resources/lego/StepperLegoTitle.webp');
+}
+#stepperIcon{
+    -fx-image: url('Resources/lego/lego-bricks.gif');
+}
+.text-flow-text{
+    -fx-fill:linear-gradient(to bottom, #43a509, #0073ff);
+}
+.check-box{
+    -fx-text-fill:linear-gradient(to bottom, #43a509, #0073ff);
+}
+.choice-box{
+    -fx-background-color: #6b6654;
+}
+.choice-box .context-menu { -fx-background-color: #a1937e; }
+.choice-box .menu-item:focused { -fx-background-color: #6b6654; }
+.choice-box .menu-item > .label { -fx-text-fill: black; }
+.choice-box .menu-item:focused > .label { -fx-text-fill: linear-gradient(to bottom, #43a509, #0073ff); }
+.button{
+    -fx-background-color:linear-gradient(to top, #ff1c1c, #a1141e);
+    -fx-text-fill: Black;
+    -fx-opacity: 1;
+    -fx-font-size: 12px;
+}
+.button:hover{
+    -fx-text-fill: linear-gradient(to bottom, #43a509, #0073ff);
+}
+.button:pressed{
+    -fx-opacity: 0.7;
+}
+.button:disabled {
+    -fx-opacity: 0.5;
+}
+.tab-pane:top .tab-header-area .headers-region .tab:top{
+    -fx-background-color: #9b8c6e;
+}
+.tab:hover .tab-label {
+    -fx-text-fill: linear-gradient(to bottom, #43a509, #0073ff);
+}
+.tab:selected .tab-label {
+    -fx-text-fill: linear-gradient(to bottom, #43a509, #0073ff);
+}
+.tab-pane:top .tab-header-area .headers-region .tab:selected:top{
+    -fx-background-color: #6c6c6c;
+}
+.background-part{
+    -fx-background-image: url('Resources/lego/lego-background.jpg');
+    -fx-background-size: cover;
+}
+#top-half{
+    -fx-background-image: None;
+    -fx-background-color: #ff0000;
+}
+.tab-pane:top .tab-header-area .tab-header-background{
+    -fx-background-image: url('Resources/thin_bg.gif');
+    -fx-background-size: cover;
+}
+#bottom-half .label {
+    -fx-text-fill: linear-gradient(to bottom, #43a509, #0073ff);
+}
+.label{
+    -fx-text-fill: linear-gradient(to bottom, #43a509, #0073ff);
+}
+#flowHistoryScroller .viewport{
+    -fx-background-color: linear-gradient(to top, #9b9b9b, #666666);
+}
+.sub-title{
+    -fx-font-size: 16px;
+}
+.ErrorText{
+    -fx-fill: #480808;
+}
+.step-container-label{
+    -fx-fill: linear-gradient(to bottom, #43a509, #0073ff);
+
+}
+/* Scroll bar*/
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track{
+    -fx-background-color : transparent;
+    -fx-border-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-border-radius :2.0em;
+}
+
+
+.scroll-bar:horizontal .increment-button ,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 0.0 10.0 0.0;
+
+}
+
+.scroll-bar:vertical .increment-button ,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color :transparent;
+    -fx-background-radius : 0.0em;
+    -fx-padding :0.0 10.0 0.0 0.0;
+
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.15em 0.0;
+}
+
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow{
+    -fx-shape : " ";
+    -fx-padding :0.0 0.15em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color :linear-gradient(to right, #9b9b9b, #6e6c6c);
+    -fx-background-insets : 2.0, 0.0, 0.0;
+    -fx-background-radius : 2.0em;
+}
+
+.scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: derive(#4D4C4F, 10.0%);
+}
+

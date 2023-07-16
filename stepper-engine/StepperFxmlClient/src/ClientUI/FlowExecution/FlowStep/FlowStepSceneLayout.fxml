@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane fx:id="stepContainerPane" onMouseClicked="#StepWasClicked" prefHeight="66.0" prefWidth="255.0" styleClass="containerBox" stylesheets="@../../Flow/FlowStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ClientUI.FlowExecution.FlowStep.FlowStepController">
+   <children>
+      <GridPane fx:id="stepDataGridPane" opacity="0.8" styleClass="container">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="101.0" minWidth="10.0" prefWidth="84.0" />
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="181.0" minWidth="10.0" prefWidth="160.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Label text="Step Name:" />
+            <Label text="Step Result:" GridPane.rowIndex="1" />
+            <Label fx:id="stepNameLabel" GridPane.columnIndex="1" />
+            <Label fx:id="stepResultLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+         </children>
+      </GridPane>
+   </children>
+</StackPane>
